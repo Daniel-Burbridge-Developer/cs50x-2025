@@ -1,4 +1,5 @@
 #include <cs50.h>
+#include <stdbool.h>
 #include <stdio.h>
 
 #define MAX_PREFIXES 5
@@ -44,29 +45,74 @@ int main(void) {
         .display_name = "VISA"}},
   };
 
+  // There is an error in my logic here that I cannot solve. Numbers such as
+  // "01" (leading with a 0) digits are incorrectly assessed, as storing them as
+  // a long immediately truncates the leading 0. As none of the credit-cards can
+  // be pre-fixed with a 0, I'm choosing to ignore this error for now instead of
+  // changing implementation to ask the user for a string and deal with
+  // type-casting.
+
+  printf("USER INPUT:\n");
   long user_input = get_long("Number: ");
-  long temp_user_input = user_input;
   int cc_length = 0;
-
-  while (temp_user_input >= 0) {
-    cc_length++;
-
-    if (temp_user_input == 0) {
-      break;
+  if (user_input == 0) {
+    cc_length = 1;
+  } else {
+    long temp = user_input;
+    while (temp > 0) {
+      temp /= 10;
+      cc_length++;
     }
-
-    printf(
-        "your temp_user_input is greater than 0, cc_length has been "
-        "incremented! "
-        "current "
-        "cc_length: %d\n",
-        cc_length);
-    temp_user_input = temp_user_input / 10;
   }
 
+  int cc_prefix = user_input / ((cc_length));
+
+  // string potential_cards_based_on_prefix[CARD_VARIATIONS];
+  // int potential_cards_based_on_prefix_count = 0;
+  string potential_cards_based_on_length[CARD_VARIATIONS];
+  int potential_cards_based_on_length_count = 0;
+
+  printf("\nCARD CHECKS BEGIN:\n");
+  // Determine if a Card matches the length of a known Card.
+  for (int i = 0; i < CARD_VARIATIONS; i++) {
+    printf("Checking Card: %s\n", CreditCardStore[i].name);
+    for (int j = 0; j < CreditCardStore[i].info.num_lengths; j++) {
+      printf("Checking CC length of %d against valid length of %d\n", cc_length,
+             CreditCardStore[i].info.valid_lengths[j]);
+      if (cc_length == CreditCardStore[i].info.valid_lengths[j]) {
+        printf("Match found!\n");
+        potential_cards_based_on_length[potential_cards_based_on_length_count] =
+            CreditCardStore[i].info.display_name;
+        potential_cards_based_on_length_count++;
+      }
+    }
+  }
+
+  // // Determine if a Card matches the prefix of a known Card.
+  // for (int i = 0; i < CARD_VARIATIONS; i++) {
+  //   for (int j = 0; j < CreditCardStore[i].info.num_prefixes; j++) {
+  //     if (cc_length == CreditCardStore[i].info.prefixes[j]) {
+  //       potential_cards_based_on_prefix[potential_cards_based_on_prefix_count]
+  //       =
+  //           CreditCardStore[i].info.display_name;
+  //     }
+  //   }
+  // }
+
+  printf("\nDEBUG LOG:\n");
   printf("This is your number: %li\n", user_input);
   printf("Just so I'm using the variable and make stops yelling at me - %s\n",
          CreditCardStore[1].info.display_name);
 
   printf("your input was %d digit(s) long\n", cc_length);
+
+  printf("Your numbers starts with the digits %d\n\n", cc_prefix);
+
+  printf("You have %d potential matches based on length\n",
+         potential_cards_based_on_length_count);
+
+  for (int i = 0; i < potential_cards_based_on_length_count; i++) {
+    printf("Based off the length of your card, it could be a: %s\n",
+           potential_cards_based_on_length[i]);
+  }
 }
