@@ -45,5 +45,28 @@ int main(void) {
   };
 
   long user_input = get_long("Number: ");
-  printf("This is your number: %li", user_input);
+  long temp_user_input = user_input;
+  int cc_length = 0;
+
+  while (temp_user_input >= 0) {
+    cc_length++;
+
+    if (temp_user_input == 0) {
+      break;
+    }
+
+    printf(
+        "your temp_user_input is greater than 0, cc_length has been "
+        "incremented! "
+        "current "
+        "cc_length: %d\n",
+        cc_length);
+    temp_user_input = temp_user_input / 10;
+  }
+
+  printf("This is your number: %li\n", user_input);
+  printf("Just so I'm using the variable and make stops yelling at me - %s\n",
+         CreditCardStore[1].info.display_name);
+
+  printf("your input was %d digit(s) long\n", cc_length);
 }
