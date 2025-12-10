@@ -124,19 +124,19 @@ int main(void) {
         .num_prefixes = 2,
         .valid_lengths = {15},
         .num_lengths = 1,
-        .display_name = "AMEX"}},
+        .display_name = "AMEX\n"}},
       {"MasterCard",
        {.prefixes = {"51", "52", "53", "54", "55"},
         .num_prefixes = 5,
         .valid_lengths = {16},
         .num_lengths = 1,
-        .display_name = "MASTERCARD"}},
+        .display_name = "MASTERCARD\n"}},
       {"Visa",
        {.prefixes = {"4"},
         .num_prefixes = 1,
         .valid_lengths = {13, 16},
         .num_lengths = 2,
-        .display_name = "VISA"}},
+        .display_name = "VISA\n"}},
   };
 
   char string_buffer[30];
@@ -145,7 +145,7 @@ int main(void) {
   bool valid = validate_card(card_to_check);
 
   if (valid != true) {
-    printf("INVALID");
+    printf("INVALID\n");
   } else {
     string potential_card_types_length[CARD_VARIATIONS];
     int potential_card_types_length_count = 0;
@@ -159,7 +159,7 @@ int main(void) {
                               potential_card_types_prefix,
                               &potential_card_types_prefix_count);
 
-    string card_type = "INVALID";
+    string card_type = "INVALID\n";
     for (int i = 0; i < potential_card_types_length_count; i++) {
       for (int k = 0; k < potential_card_types_prefix_count; k++) {
         if (strcmp(potential_card_types_length[i],
