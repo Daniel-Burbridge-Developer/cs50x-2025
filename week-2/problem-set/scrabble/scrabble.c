@@ -30,18 +30,18 @@ int score_answer(string answer) {
   char string_buffer[50];
   int answer_length = sprintf(string_buffer, "%s", answer);
 
-  printf("String %s is %d characters long!\n", answer, answer_length);
+  //   printf("String %s is %d characters long!\n", answer, answer_length);
 
   int sum = 0;
   for (int i = 0; i < answer_length; i++) {
     answer[i] = tolower(answer[i]);
     int points = silly_letter_to_point_conversation(answer[i]);
-    printf("%c is worth %d points, adding to %d equals, %d\n", answer[i],
-           points, sum, points + sum);
+    // printf("%c is worth %d points, adding to %d equals, %d\n", answer[i],
+    //    points, sum, points + sum);
     sum += points;
   }
 
-  printf("SCORE: %d\n", sum);
+  //   printf("SCORE: %d\n", sum);
   return sum;
 }
 
@@ -51,12 +51,30 @@ int score_answer(string answer) {
 int main(void) {
   const int PLAYERS = 2;
   string answers[PLAYERS];
+  int scores[PLAYERS];
 
   for (int i = 0; i < PLAYERS; i++) {
     answers[i] = get_input_from_player(i);
   }
 
   for (int i = 0; i < PLAYERS; i++) {
-    score_answer(answers[i]);
+    scores[i] = score_answer(answers[i]);
+  }
+
+  int largestScore = 0;
+  int winningPlayer = 0;
+  for (int i = 0; i < PLAYERS; i++) {
+    if (scores[i] > largestScore) {
+      largestScore = scores[i];
+      winningPlayer = i + 1;
+    } else if (scores[i] == largestScore) {
+      winningPlayer = 0;
+    }
+  }
+
+  if (winningPlayer == 0) {
+    printf("Tie!\n");
+  } else {
+    printf("Player %d wins!\n", winningPlayer);
   }
 }
