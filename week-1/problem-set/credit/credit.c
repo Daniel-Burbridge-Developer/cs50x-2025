@@ -124,19 +124,19 @@ int main(void) {
         .num_prefixes = 2,
         .valid_lengths = {15},
         .num_lengths = 1,
-        .display_name = "AMEX\n"}},
+        .display_name = "AMEX"}},
       {"MasterCard",
        {.prefixes = {"51", "52", "53", "54", "55"},
         .num_prefixes = 5,
         .valid_lengths = {16},
         .num_lengths = 1,
-        .display_name = "MASTERCARD\n"}},
+        .display_name = "MASTERCARD"}},
       {"Visa",
        {.prefixes = {"4"},
         .num_prefixes = 1,
         .valid_lengths = {13, 16},
         .num_lengths = 2,
-        .display_name = "VISA\n"}},
+        .display_name = "VISA"}},
   };
 
   char string_buffer[30];
@@ -159,7 +159,7 @@ int main(void) {
                               potential_card_types_prefix,
                               &potential_card_types_prefix_count);
 
-    string card_type = "INVALID\n";
+    string card_type = "INVALID";
     for (int i = 0; i < potential_card_types_length_count; i++) {
       for (int k = 0; k < potential_card_types_prefix_count; k++) {
         if (strcmp(potential_card_types_length[i],
@@ -170,6 +170,6 @@ int main(void) {
       }
     }
 
-    printf("%s", card_type);
+    printf("%s\n", card_type);
   }
 }
