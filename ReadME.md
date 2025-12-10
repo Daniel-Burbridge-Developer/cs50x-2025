@@ -25,8 +25,8 @@ This table includes metrics (Key Concepts, Effort, and Mentor Feedback) designed
 |  1   | **Cash**            | Floating-Point Imprecision, Greedy Algorithms    |   ✅   |   2025-12-02    | N/A                                                        |
 |  1   | **Credit**          | Modulo Arithmetic, Luhn's Algorithm              |   ✅   |   2025-12-10    | This took much longer, and was much harder, than expected. |
 |  2   | **Scrabble**        |                                                  |   ✅   |   2025-12-10    | This one wasn't too bad                                    |
-|  2   | **Readability**     | String Manipulation, `ctype.h` Library           |   ⏳   |                 |                                                            |
-|  2   | **Caesar**          | Command-Line Arguments, Modular Arithmetic       |        |                 |                                                            |
+|  2   | **Readability**     | String Manipulation, `ctype.h` Library           |   ✅   |   2025-12-10    | Even Easier!                                               |
+|  2   | **Caesar**          | Command-Line Arguments, Modular Arithmetic       |   ⏳   |                 |                                                            |
 |  2   | **Substitution**    | Cryptography, Array Indexing                     |        |                 |                                                            |
 |  3   | **Plurality**       | Arrays, Searching, Sorting (Intro)               |        |                 |                                                            |
 |  3   | **Runoff**          | Multi-Dimensional Arrays, Data Structures        |        |                 |                                                            |
