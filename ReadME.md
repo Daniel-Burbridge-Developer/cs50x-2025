@@ -8,6 +8,10 @@ The primary focus is **career readiness** and independent problem-solving. All p
 
 ---
 
+### Additional Challenges
+
+This project is being completed, on my dedicated development server via SSH & not in the CS50x environment. I have manually added packages such as Submit50, and Check50.
+
 ## 🧭 CS50x Progress Tracker
 
 This table includes metrics (Key Concepts, Effort, and Mentor Feedback) designed to track growth towards a professional Software Engineer level.
