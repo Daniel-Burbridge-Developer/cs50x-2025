@@ -1,4 +1,5 @@
 #include <cs50.h>
+#include <ctype.h>
 #include <stdio.h>
 
 string get_input_from_player(int player) {
@@ -13,7 +14,11 @@ int score_answer(string answer) {
 
   int sum = 0;
   for (int i = 0; i < answer_length; i++) {
-    sum += answer[i] - 'a' + 1;
+    answer[i] = tolower(answer[i]);
+    int points = answer[i] - 'a' + 1;
+    printf("%c is worth %d points, adding to %d equals, %d\n", answer[i],
+           points, sum, points + sum);
+    sum += points;
   }
 
   printf("SCORE: %d\n", sum);
