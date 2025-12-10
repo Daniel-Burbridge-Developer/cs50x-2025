@@ -6,8 +6,18 @@ string get_input_from_player(int player) {
 }
 
 int score_answer(string answer) {
-  printf("Answer: %s\n", answer);
-  return 1;
+  char string_buffer[50];
+  int answer_length = sprintf(string_buffer, "%s", answer);
+
+  printf("String %s is %d characters long!\n", answer, answer_length);
+
+  int sum = 0;
+  for (int i = 0; i < answer_length; i++) {
+    sum += answer[i] - 'a' + 1;
+  }
+
+  printf("SCORE: %d\n", sum);
+  return sum;
 }
 
 int main(void) {
