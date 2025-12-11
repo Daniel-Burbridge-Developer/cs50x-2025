@@ -29,7 +29,7 @@ bool validate_key(string arg) {
     return false;
   }
 
-  bool seen[26];
+  bool seen[26] = {false};
   for (int i = 0, n = strlen(arg); i < n; i++) {
     // printf("letter: %c\n", arg[i]);
     if (!isalpha(arg[i])) {
