@@ -6,6 +6,7 @@
 #include <string.h>
 
 bool validate_key(string arg);
+string rotate_string(string text, string key);
 
 int main(int argument_count, string* argv) {
   if (argument_count != 2) {
@@ -19,7 +20,7 @@ int main(int argument_count, string* argv) {
   }
 
   string plaintext = get_string("plaintext: ");
-  // Do Stuff
+  printf("ciphertext: %s\n", rotate_string(plaintext, argv[1]));
   return 0;
 }
 
@@ -30,10 +31,12 @@ bool validate_key(string arg) {
 
   bool seen[26];
   for (int i = 0, n = strlen(arg); i < n; i++) {
+    // printf("letter: %c\n", arg[i]);
     if (!isalpha(arg[i])) {
       return false;
     } else {
-      int position = arg[i] - (int)arg[i];
+      int position = toupper(arg[i]) - (int)'A';
+      // printf("position: %d\n", position);
       if (seen[position]) {
         return false;
       } else {
@@ -43,4 +46,17 @@ bool validate_key(string arg) {
   }
 
   return true;
+}
+
+string rotate_string(string text, string key) {
+  for (int i = 0, n = strlen(text); i < n; i++) {
+    if (isupper(text[i])) {
+      text[i] = toupper(key[text[i] - (int)'A']);
+    }
+    if (islower(text[i])) {
+      text[i] = tolower(key[text[i] - (int)'a']);
+    }
+  }
+
+  return text;
 }
