@@ -1,0 +1,11 @@
+sort1 uses: Bubble Sort
+
+How do you know?: It performs quickest when the files are already sorted, due to it's effecient passthrough on almost sorted items.
+
+sort2 uses: Merge Sort
+
+How do you know?: It performs fastest on the random.txt files, and is the most effecient algorithm.
+
+sort3 uses: Selection Sort
+
+How do you know?: Because it's not the other ones.
