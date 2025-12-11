@@ -25,7 +25,8 @@ int main(int argument_count, string* argv) {
   int key = normalise_value(argv[1]);
   string plain_text = get_string("plaintext: ");
   string encrypted_text = rotate_string(plain_text, key);
-  printf("%s", encrypted_text);
+  printf("ciphertext: %s\n", encrypted_text);
+  return 0;
 }
 
 bool only_digits(string arg) {
@@ -39,8 +40,7 @@ bool only_digits(string arg) {
 }
 
 int normalise_value(string arg) {
-  int value = atoi(arg);
-  int key = value % 26;
+  int key = atoi(arg);
   return key;
 }
 
@@ -52,27 +52,13 @@ string rotate_string(string text, int key) {
 }
 
 char rotate_char(char c, int key) {
-  int new_char_int = c - key;
-  printf("int rep of new char: %d\n", new_char_int);
-  if (new_char_int < 97) {
-    new_char_int += 26;
+  if (isupper(c)) {
+    c = (char)((((c - (int)'A') + key) % 26) + (int)'A');
   }
-  char new_char_char = (char)new_char_int;
-  printf("char rep of new char: %c\n", new_char_char);
 
-  return new_char_char;
+  if (islower(c)) {
+    c = (char)((((c - (int)'a') + key) % 26) + (int)'a');
+  }
+
+  return c;
 }
-
-// Pseudocode
-// If 0 command line arguments => Return 1
-// If 1 command line argument => Proceed
-// if 2+ command line arguments => Return 1
-
-// Check if command line argument is a digit.
-// if not Digits => Return 1
-// if Digits => Return as int
-
-// Request Input
-// If Alpha => Rotate by digits
-// If not Alpha => Return as is.
-// Output
