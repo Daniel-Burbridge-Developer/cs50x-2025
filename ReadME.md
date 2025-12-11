@@ -25,7 +25,8 @@ This project is being completed, on my dedicated development server via SSH & no
 |  2   | **Scrabble**        |                                                  |   ✅   |   2025-12-10    | This one wasn't too bad                                    |
 |  2   | **Readability**     | String Manipulation, `ctype.h` Library           |   ✅   |   2025-12-10    | Even Easier!                                               |
 |  2   | **Caesar**          | Command-Line Arguments, Modular Arithmetic       |   ✅   |   2025-12-11    | Some curly parts.                                          |
-|  2   | **Substitution**    | Cryptography, Array Indexing                     |   ⏳   |                 |                                                            |
+|  2   | **Substitution**    | Cryptography, Array Indexing                     |   ✅   |   2025-12-11    | much easier than the other, patern recognition!            |
+|  3   | **Sort**            |                                                  |   ⏳   |                 |                                                            |
 |  3   | **Plurality**       | Arrays, Searching, Sorting (Intro)               |        |                 |                                                            |
 |  3   | **Runoff**          | Multi-Dimensional Arrays, Data Structures        |        |                 |                                                            |
 |  3   | **Tideman**         | Recursion, Graph Theory, Deep Search             |        |                 |                                                            |
