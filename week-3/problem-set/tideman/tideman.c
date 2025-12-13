@@ -158,18 +158,22 @@ bool trace_leads_to_winner(int origin_winner, int loser) {
     return true;
   }
 
-  bool trace = false;
   for (int i = 0; i < candidate_count; i++) {
     if (locked[loser][i]) {
-      trace = trace_leads_to_winner(origin_winner, i);
+      if (trace_leads_to_winner(origin_winner, i)) {
+        return true;
+      }
     }
   }
 
-  return trace;
+  return false;
 }
 
 // Print the winner of the election
 void print_winner(void) {
-  // TODO
+  for (int i = 0; i < candidate_count; i++) {
+    for (int j = 0; j < candidate_count; j++) {
+    }
+  }
   return;
 }
