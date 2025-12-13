@@ -27,9 +27,9 @@ This project is being completed, on my dedicated development server via SSH & no
 |  2   | **Caesar**          | Command-Line Arguments, Modular Arithmetic       |   ✅   |   2025-12-11    | Some curly parts.                                                         |
 |  2   | **Substitution**    | Cryptography, Array Indexing                     |   ✅   |   2025-12-11    | much easier than the other, patern recognition!                           |
 |  3   | **Sort**            |                                                  |   ✅   |   2025-12-11    | I didn't understand this one. I one shot it, maybe luck, maybe intuition. |
-|  3   | **Plurality**       | Arrays, Searching, Sorting (Intro)               |   ⏳   |                 |                                                                           |
-|  3   | **Runoff**          | Multi-Dimensional Arrays, Data Structures        |        |                 |                                                                           |
-|  3   | **Tideman**         | Recursion, Graph Theory, Deep Search             |        |                 |                                                                           |
+|  3   | **Plurality**       | Arrays, Searching, Sorting (Intro)               |   ✅   |   2025-12-13    |                                                                           |
+|  3   | **Runoff**          | Multi-Dimensional Arrays, Data Structures        |   ✅   |   2025-12-13    | Small formatting issue, other than that close to a 1 shot.                |
+|  3   | **Tideman**         | Recursion, Graph Theory, Deep Search             |   ⏳   |                 |                                                                           |
 |  4   | **Filter - Less**   | Pointers, Memory Allocation, RGB structs         |        |                 |                                                                           |
 |  4   | **Filter - More**   | Pointers, Memory Allocation (Advanced), File I/O |        |                 |                                                                           |
 |  4   | **Recover**         | File Pointers, Block-level I/O, Data Recovery    |        |                 |                                                                           |
