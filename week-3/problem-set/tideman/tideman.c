@@ -172,7 +172,16 @@ bool trace_leads_to_winner(int origin_winner, int loser) {
 // Print the winner of the election
 void print_winner(void) {
   for (int i = 0; i < candidate_count; i++) {
+    bool never_loses = true;
     for (int j = 0; j < candidate_count; j++) {
+      if (locked[j][i]) {
+        never_loses = false;
+      }
+    }
+
+    if (never_loses) {
+      printf("%s\n", candidates[i]);
+      return;
     }
   }
   return;
