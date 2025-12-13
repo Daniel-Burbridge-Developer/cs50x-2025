@@ -160,7 +160,7 @@ bool trace_leads_to_winner(int origin_winner, int loser) {
 
   for (int i = 0; i < candidate_count; i++) {
     if (locked[loser][i]) {
-      trace_leads_to_winner(origin_winner, i);
+      return trace_leads_to_winner(origin_winner, i);
     }
   }
 
