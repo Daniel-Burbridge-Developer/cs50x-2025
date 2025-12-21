@@ -51,7 +51,9 @@ int main(int argc, char *argv[]) {
 
   //   BYTE b;
   TWOBYTE tb;
+  TWOBYTE new_val;
   while (fread(&tb, sizeof(tb), 1, input)) {
+    tb = tb * factor;
     fwrite(&tb, sizeof(tb), 1, output);
     // printf("tb: %f \n", (float)tb * factor);
   }
