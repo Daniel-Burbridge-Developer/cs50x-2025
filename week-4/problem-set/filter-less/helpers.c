@@ -58,12 +58,32 @@ void reflect(int height, int width, RGBTRIPLE image[height][width]) {
   RGBTRIPLE reversed[height][width];
   for (int i = 0; i < height; i++) {
     for (int j = 0; j < width; j++) {
-      RGBTRIPLE pixel = image[height][width];
+      RGBTRIPLE pixel = image[i][j];
       reversed[i][width - (j + 1)] = pixel;
+
+      //   BYTE red = image[i][j].rgbtRed;
+      //   BYTE green = image[i][j].rgbtGreen;
+      //   BYTE blue = image[i][j].rgbtBlue;
+
+      //   BYTE rRed = reversed[i][j].rgbtRed;
+      //   BYTE rGreen = reversed[i][j].rgbtGreen;
+      //   BYTE rBlue = reversed[i][j].rgbtBlue;
+
+      //   printf(
+      //       "Image Red: %i\nImage Green: %i\n Image Blue: %i\n Reversed Red:
+      //       "
+      //       "%i\n Reversed Green: %i\n Reversed Blue: %i\n",
+      //       red, green, blue, rRed, rGreen, rBlue);
     }
   }
 
-  image = reversed;
+  for (int i = 0; i < height; i++) {
+    for (int j = 0; j < width; j++) {
+      image[i][j].rgbtRed = reversed[i][j].rgbtRed;
+      image[i][j].rgbtGreen = reversed[i][j].rgbtGreen;
+      image[i][j].rgbtBlue = reversed[i][j].rgbtBlue;
+    }
+  }
   return;
 }
 
