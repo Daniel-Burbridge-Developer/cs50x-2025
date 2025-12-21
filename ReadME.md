@@ -30,8 +30,8 @@ This project is being completed, on my dedicated development server via SSH & no
 |  3   | **Plurality**       | Arrays, Searching, Sorting (Intro)               |   ✅   |   2025-12-13    |                                                                           |
 |  3   | **Runoff**          | Multi-Dimensional Arrays, Data Structures        |   ✅   |   2025-12-13    | Small formatting issue, other than that close to a 1 shot.                |
 |  3   | **Tideman**         | Recursion, Graph Theory, Deep Search             |   ✅   |   2025-12-13    | Like 2 hours of deep thought? Could of been worse... (my brain hurts)     |
-|  4   | **Volume**          |                                                  |   ⌛   |                 |                                                                           |
-|  4   | **Filter - Less**   | Pointers, Memory Allocation, RGB structs         |        |                 |                                                                           |
+|  4   | **Volume**          |                                                  |   ✅   |   2025-12-21    | This was infinite pain. I understood concepts, did not understand syntax. |
+|  4   | **Filter - Less**   | Pointers, Memory Allocation, RGB structs         |   ⌛   |                 |                                                                           |
 |  4   | **Filter - More**   | Pointers, Memory Allocation (Advanced), File I/O |        |                 |                                                                           |
 |  4   | **Recover**         | File Pointers, Block-level I/O, Data Recovery    |        |                 |                                                                           |
 |  5   | **Speller**         | Hash Tables, Linked Lists, Memory Management     |        |                 |                                                                           |
