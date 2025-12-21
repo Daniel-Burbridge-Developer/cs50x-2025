@@ -3,6 +3,9 @@
 #include <math.h>
 #include <stdio.h>
 
+RGBTRIPLE get_box_average(int i, int j, int height, int width,
+                          RGBTRIPLE image[height][width]);
+
 // Convert image to grayscale
 void grayscale(int height, int width, RGBTRIPLE image[height][width]) {
   for (int i = 0; i < height; i++) {
@@ -88,4 +91,39 @@ void reflect(int height, int width, RGBTRIPLE image[height][width]) {
 }
 
 // Blur image
-void blur(int height, int width, RGBTRIPLE image[height][width]) { return; }
+void blur(int height, int width, RGBTRIPLE image[height][width]) {
+  RGBTRIPLE blurred[height][width];
+  for (int i = 0; i < height; i++) {
+    for (int j = 0; i < width; j++) {
+      blurred[i][j] = get_box_average(i, j, height, width, image);
+    }
+  }
+  return;
+}
+
+RGBTRIPLE get_box_average(int i, int j, int height, int width,
+                          RGBTRIPLE image[height][width]) {
+  RGBTRIPLE pixel;
+
+  int redCount = 0;
+  int greenCount = 0;
+  int blueCount = 0;
+
+  for (int k = 0; k < 3; k++) {
+    for (int m = 0; m < 3; m++) {
+      if ((i + (k - 1)) < 0 || (i + (k - 1)) > height || j + (m - 1) < 0 ||
+          j + (m - 1) > width) {
+        printf("skipping edge pixel");
+        continue;
+      }
+      redCount = redCount + (int)image[i + (k - 1)][j + (m - 1)].rgbtRed;
+      greenCount = greenCount + (int)image[i + (k - 1)][j + (m - 1)].rgbtGreen;
+      blueCount = blueCount + (int)image[i + (k - 1)][j + (m - 1)].rgbtBlue;
+
+      printf("redCount = %i\n greenCount = %i\n blueCount = %i", redCount,
+             greenCount, blueCount);
+    }
+  }
+
+  return pixel;
+}
