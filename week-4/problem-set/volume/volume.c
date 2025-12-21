@@ -1,12 +1,15 @@
 // Modifies the volume of an audio file
 
+#include <cs50.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 // Number of bytes in .wav header
 const int HEADER_SIZE = 44;
 typedef uint8_t BYTE;
+typedef int16_t TWOBYTE;
 
 int main(int argc, char *argv[]) {
   // Check command-line arguments
@@ -31,21 +34,29 @@ int main(int argc, char *argv[]) {
   float factor = atof(argv[3]);
 
   // TODO: Read samples from input file and write updated data to output
-  // file
 
-  BYTE b;
+  BYTE *header = malloc(sizeof(BYTE) * 44);
+  fread(header, sizeof(BYTE), 44, input);
+  fwrite(header, sizeof(BYTE), 44, output);
 
-  int count = 0;
-  while (fread(&b, sizeof(b), 1, input) != 0) {
-    count++;
-    if (count < HEADER_SIZE) {
-      fwrite(&b, sizeof(b), 1, output);
-    } else {
-      float c = b * factor;
-      fwrite(&c, sizeof(b), 1, output);
-    }
+  fclose(output);
+
+  output = fopen(argv[2], "a");
+  if (output == NULL) {
+    printf("Could not open file.\n");
+    return 1;
   }
 
+  //   printf("header %s\n", header);
+
+  //   BYTE b;
+  TWOBYTE tb;
+  while (fread(&tb, sizeof(tb), 1, input)) {
+    fwrite(&tb, sizeof(tb), 1, output);
+    // printf("tb: %f \n", (float)tb * factor);
+  }
+
+  free(header);
   // Close files
   fclose(input);
   fclose(output);
