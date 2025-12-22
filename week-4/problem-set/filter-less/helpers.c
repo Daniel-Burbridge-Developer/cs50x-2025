@@ -113,7 +113,7 @@ RGBTRIPLE get_box_average(int i, int j, int height, int width,
                           RGBTRIPLE image[height][width]) {
   RGBTRIPLE pixel;
 
-  int pixelCount = 0;
+  float pixelCount = 0;
   int redCount = 0;
   int greenCount = 0;
   int blueCount = 0;
@@ -153,9 +153,9 @@ RGBTRIPLE get_box_average(int i, int j, int height, int width,
     }
   }
 
-  redCount /= pixelCount;
-  greenCount /= pixelCount;
-  blueCount /= pixelCount;
+  redCount = round(redCount / pixelCount);
+  greenCount = round(greenCount / pixelCount);
+  blueCount = round(blueCount / pixelCount);
 
   pixel.rgbtRed = redCount;
   pixel.rgbtGreen = greenCount;
