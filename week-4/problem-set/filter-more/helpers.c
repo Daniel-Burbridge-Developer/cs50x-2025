@@ -6,6 +6,10 @@
 
 int get_box(int height, int width, int pos_y, int pos_x,
             RGBTRIPLE image[height][width], RGBTRIPLE box[9]);
+int get_box_with_black_pixels(int height, int width, int pos_y, int pos_x,
+                              RGBTRIPLE image[height][width], RGBTRIPLE box[9]);
+void multiply_box_by_matrix(RGBTRIPLE box[9], int matrix[9],
+                            RGBTRIPLE matrixResult[9]);
 
 RGBTRIPLE get_blurred_pixel(RGBTRIPLE box[9], int box_size);
 
@@ -65,8 +69,29 @@ void blur(int height, int width, RGBTRIPLE image[height][width]) {
 
 // Detect edges
 void edges(int height, int width, RGBTRIPLE image[height][width]) {
-  // Do the edges
-  //  thing
+  int gx[9] = {-1, 0, 1, -2, 0, 2, -1, 0, 1};
+  int gy[9] = {-1, -2, -1, 0, 0, 0, 1, 2, 1};
+
+  RGBTRIPLE edgeTarget[height][width];
+
+  for (int i = 0; i < height; i++) {
+    for (int j = 0; j < width; j++) {
+      RGBTRIPLE box[9];
+      RGBTRIPLE gxResult[9];
+      RGBTRIPLE gyResult[9];
+      int box_size = get_box(height, width, i, j, image, box);
+      multiply_box_by_matrix(box, gx, gxResult);
+      multiply_box_by_matrix(box, gx, gyResult);
+      // Do the next thing witht the gx and gy
+    }
+  }
+
+  for (int i = 0; i < height; i++) {
+    for (int j = 0; j < width; j++) {
+      image[i][j] = edgeTarget[i][j];
+    }
+  }
+
   return;
 }
 
@@ -87,6 +112,41 @@ int get_box(int height, int width, int pos_y, int pos_x,
   }
 
   return box_size;
+}
+
+int get_box_with_black_pixels(int height, int width, int pos_y, int pos_x,
+                              RGBTRIPLE image[height][width],
+                              RGBTRIPLE box[9]) {
+  int box_size = 0;
+  RGBTRIPLE blackPixel;
+  blackPixel.rgbtRed = 0;
+  blackPixel.rgbtGreen = 0;
+  blackPixel.rgbtBlue = 0;
+  for (int i = -1; i < 2; i++) {
+    if (pos_y + (i) < 0 || pos_y + (i) >= height) {
+      box[box_size] = blackPixel;
+      box_size++;
+    }
+    for (int j = -1; j < 2; j++) {
+      if (pos_x + j < 0 || pos_x + j >= width) {
+        box[box_size] = blackPixel;
+        box_size++;
+      }
+      box[box_size] = image[pos_y + i][pos_x + j];
+    }
+  }
+
+  return box_size;
+}
+
+void multiply_box_by_matrix(RGBTRIPLE box[9], int matrix[9],
+                            RGBTRIPLE matrixResult[9]) {
+  for (int i = 0; i < 9; i++) {
+    matrixResult[i].rgbtRed = box[i].rgbtRed * matrix[i];
+    matrixResult[i].rgbtGreen = box[i].rgbtGreen * matrix[i];
+    matrixResult[i].rgbtBlue = box[i].rgbtBlue * matrix[i];
+  }
+  return;
 }
 
 RGBTRIPLE get_blurred_pixel(RGBTRIPLE box[9], int box_size) {
