@@ -131,12 +131,12 @@ int get_box_with_black_pixels(int height, int width, int pos_y, int pos_x,
   blackPixel.rgbtGreen = 0;
   blackPixel.rgbtBlue = 0;
   for (int i = -1; i < 2; i++) {
-    if (pos_y + (i) < 0 || pos_y + (i) >= height) {
-      box[box_size] = blackPixel;
-      box_size++;
-      continue;
-    }
     for (int j = -1; j < 2; j++) {
+      if (pos_y + (i) < 0 || pos_y + (i) >= height) {
+        box[box_size] = blackPixel;
+        box_size++;
+        continue;
+      }
       if (pos_x + j < 0 || pos_x + j >= width) {
         box[box_size] = blackPixel;
         box_size++;
@@ -183,18 +183,18 @@ RGBTRIPLE get_edged_pixel(INTTRIPLE m1[9], INTTRIPLE m2[9]) {
     gyBlue += m2[i].rgbtBlue;
   }
 
-  gxRed = sqrt(gxRed);
-  gyRed = sqrt(gyRed);
+  gxRed = (gxRed * gxRed);
+  gyRed = (gyRed * gyRed);
 
-  gxGreen = sqrt(gxGreen);
-  gyGreen = sqrt(gyGreen);
+  gxGreen = (gxGreen * gxGreen);
+  gyGreen = (gyGreen * gyGreen);
 
-  gxBlue = sqrt(gxBlue);
-  gyBlue = sqrt(gyBlue);
+  gxBlue = (gxBlue * gxBlue);
+  gyBlue = (gyBlue * gyBlue);
 
-  intPixel.rgbtRed = round(gxRed + gyRed);
-  intPixel.rgbtGreen = round(gxGreen + gyGreen);
-  intPixel.rgbtBlue = round(gxBlue + gyBlue);
+  intPixel.rgbtRed = round(sqrt(gxRed + gyRed));
+  intPixel.rgbtGreen = round(sqrt(gxGreen + gyGreen));
+  intPixel.rgbtBlue = round(sqrt(gxBlue + gyBlue));
 
   if (intPixel.rgbtRed > 255) {
     intPixel.rgbtRed = 255;
