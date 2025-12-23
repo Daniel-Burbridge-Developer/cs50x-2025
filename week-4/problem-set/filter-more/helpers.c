@@ -4,12 +4,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+typedef struct {
+  int rgbtBlue;
+  int rgbtGreen;
+  int rgbtRed;
+} __attribute__((__packed__)) INTTRIPLE;
+
 int get_box(int height, int width, int pos_y, int pos_x,
             RGBTRIPLE image[height][width], RGBTRIPLE box[9]);
 int get_box_with_black_pixels(int height, int width, int pos_y, int pos_x,
                               RGBTRIPLE image[height][width], RGBTRIPLE box[9]);
 void multiply_box_by_matrix(RGBTRIPLE box[9], int matrix[9],
-                            RGBTRIPLE matrixResult[9]);
+                            INTTRIPLE matrixResult[9]);
+
+RGBTRIPLE get_edged_pixel(INTTRIPLE m1[9], INTTRIPLE m2[9]);
 
 RGBTRIPLE get_blurred_pixel(RGBTRIPLE box[9], int box_size);
 
@@ -77,12 +85,12 @@ void edges(int height, int width, RGBTRIPLE image[height][width]) {
   for (int i = 0; i < height; i++) {
     for (int j = 0; j < width; j++) {
       RGBTRIPLE box[9];
-      RGBTRIPLE gxResult[9];
-      RGBTRIPLE gyResult[9];
-      int box_size = get_box(height, width, i, j, image, box);
+      INTTRIPLE gxResult[9];
+      INTTRIPLE gyResult[9];
+      int box_size = get_box_with_black_pixels(height, width, i, j, image, box);
       multiply_box_by_matrix(box, gx, gxResult);
-      multiply_box_by_matrix(box, gx, gyResult);
-      // Do the next thing witht the gx and gy
+      multiply_box_by_matrix(box, gy, gyResult);
+      edgeTarget[i][j] = get_edged_pixel(gxResult, gyResult);
     }
   }
 
@@ -126,13 +134,16 @@ int get_box_with_black_pixels(int height, int width, int pos_y, int pos_x,
     if (pos_y + (i) < 0 || pos_y + (i) >= height) {
       box[box_size] = blackPixel;
       box_size++;
+      continue;
     }
     for (int j = -1; j < 2; j++) {
       if (pos_x + j < 0 || pos_x + j >= width) {
         box[box_size] = blackPixel;
         box_size++;
+        continue;
       }
       box[box_size] = image[pos_y + i][pos_x + j];
+      box_size++;
     }
   }
 
@@ -140,13 +151,68 @@ int get_box_with_black_pixels(int height, int width, int pos_y, int pos_x,
 }
 
 void multiply_box_by_matrix(RGBTRIPLE box[9], int matrix[9],
-                            RGBTRIPLE matrixResult[9]) {
+                            INTTRIPLE matrixResult[9]) {
   for (int i = 0; i < 9; i++) {
     matrixResult[i].rgbtRed = box[i].rgbtRed * matrix[i];
     matrixResult[i].rgbtGreen = box[i].rgbtGreen * matrix[i];
     matrixResult[i].rgbtBlue = box[i].rgbtBlue * matrix[i];
   }
   return;
+}
+
+RGBTRIPLE get_edged_pixel(INTTRIPLE m1[9], INTTRIPLE m2[9]) {
+  RGBTRIPLE pixel;
+  INTTRIPLE intPixel;
+
+  int gxRed = 0;
+  int gxGreen = 0;
+  int gxBlue = 0;
+
+  int gyRed = 0;
+  int gyGreen = 0;
+  int gyBlue = 0;
+
+  for (int i = 0; i < 9; i++) {
+    gxRed += m1[i].rgbtRed;
+    gyRed += m2[i].rgbtRed;
+
+    gxGreen += m1[i].rgbtGreen;
+    gyGreen += m2[i].rgbtGreen;
+
+    gxBlue += m1[i].rgbtBlue;
+    gyBlue += m2[i].rgbtBlue;
+  }
+
+  gxRed = sqrt(gxRed);
+  gyRed = sqrt(gyRed);
+
+  gxGreen = sqrt(gxGreen);
+  gyGreen = sqrt(gyGreen);
+
+  gxBlue = sqrt(gxBlue);
+  gyBlue = sqrt(gyBlue);
+
+  intPixel.rgbtRed = round(gxRed + gyRed);
+  intPixel.rgbtGreen = round(gxGreen + gyGreen);
+  intPixel.rgbtBlue = round(gxBlue + gyBlue);
+
+  if (intPixel.rgbtRed > 255) {
+    intPixel.rgbtRed = 255;
+  }
+
+  if (intPixel.rgbtGreen > 255) {
+    intPixel.rgbtGreen = 255;
+  }
+
+  if (intPixel.rgbtBlue > 255) {
+    intPixel.rgbtBlue = 255;
+  }
+
+  pixel.rgbtRed = intPixel.rgbtRed;
+  pixel.rgbtGreen = intPixel.rgbtGreen;
+  pixel.rgbtBlue = intPixel.rgbtBlue;
+
+  return pixel;
 }
 
 RGBTRIPLE get_blurred_pixel(RGBTRIPLE box[9], int box_size) {
