@@ -11,7 +11,10 @@ void grayscale(int height, int width, RGBTRIPLE image[height][width]) {
       BYTE green = image[i][j].rgbtGreen;
       BYTE blue = image[i][j].rgbtBlue;
 
-      int average = round((red + green + blue) / 3.0);
+      int average = round((red + green + blue
+
+                           ) /
+                          3.0);
 
       image[i][j].rgbtRed = average;
       image[i][j].rgbtGreen = average;
@@ -23,7 +26,13 @@ void grayscale(int height, int width, RGBTRIPLE image[height][width]) {
 
 // Reflect image horizontally
 void reflect(int height, int width, RGBTRIPLE image[height][width]) {
-  // Do the reflect thing
+  for (int i = 0; i < height; i++) {
+    for (int j = 0; j < width / 2; j++) {
+      RGBTRIPLE pixel = image[i][j];
+      image[i][j] = image[i][width - (j + 1)];
+      image[i][width - (j + 1)] = pixel;
+    }
+  }
   return;
 }
 
