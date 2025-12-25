@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 
 typedef uint8_t BYTE;
 
@@ -24,8 +25,9 @@ int main(int argc, char *argv[]) {
   BYTE block[512];
   int jpg_count = 0;
 
-  char fileName[16];
-  sprintf(fileName, "%03d.jpg", jpg_count);
+  char fileName[32];
+  mkdir("output", 0777);
+  sprintf(fileName, "output/%03d.jpg", jpg_count);
 
   FILE *outptr = NULL;
 
@@ -37,7 +39,7 @@ int main(int argc, char *argv[]) {
       } else {
         fclose(outptr);
         jpg_count++;
-        sprintf(fileName, "%03d.jpg", jpg_count);
+        sprintf(fileName, "output/%03d.jpg", jpg_count);
         outptr = fopen(fileName, "w");
       }
     }
