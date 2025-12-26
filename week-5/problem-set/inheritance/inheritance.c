@@ -61,7 +61,7 @@ person *create_family(int generations) {
 
     for (int i = 0; i < 2; i++) {
       int random_int = rand() % 2;
-      pointer->alleles[i] = parent0->alleles[random_int];
+      pointer->alleles[i] = pointer->parents[i]->alleles[random_int];
     }
 
   }
