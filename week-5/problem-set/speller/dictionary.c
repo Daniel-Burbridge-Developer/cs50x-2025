@@ -60,16 +60,10 @@ bool load(const char *dictionary) {
       curLetter = 0;
       hashsum = hash(curWord);
 
-      if (table[hashsum] == NULL) {
-        node *baseNode = table[hashsum];
-        node *newNode = malloc(sizeof(node));
-        strcpy(newNode->word, curWord);
-        newNode->next = baseNode;
-      } else {
-        node *newNode = malloc(sizeof(node));
-        strcpy(newNode->word, curWord);
-        newNode->next = NULL;
-      }
+      node *baseNode = table[hashsum];
+      node newNode = {"", baseNode};
+      strcpy(newNode.word, curWord);
+      table[hashsum] = &newNode;
     }
     curWord[curLetter] = c[0];
     curLetter++;
@@ -90,6 +84,7 @@ unsigned int size(void) {
     }
   }
 
+  printf("DICT SIZE %i\n", count);
   return count;
 }
 
