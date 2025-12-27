@@ -82,8 +82,15 @@ bool load(const char *dictionary) {
 unsigned int size(void) {
   int count = 0;
   for (int i = 0; i < N; i++) {
+    if (table[i] != NULL) {
+      count++;
+      if (table[i]->next != NULL) {
+        count += 1;  // rescursivly grab all in next chain and add
+      }
+    }
   }
-  return 0;
+
+  return count;
 }
 
 // Unloads dictionary from memory, returning true if successful, else false
