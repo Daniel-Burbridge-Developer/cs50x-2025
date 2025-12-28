@@ -1,0 +1,9 @@
+[project]
+name = "sentimental-mario-more"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "cs50>=9.4.0",
+]
