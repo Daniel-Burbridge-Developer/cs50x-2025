@@ -24,10 +24,17 @@ node *table[N];
 
 // My Func Signitures
 unsigned int traverse_chain(node *curNode, int count);
+unsigned int traverse_chain_and_compare(node *curNode, const char *word);
+void traverse_chain_and_free(node *curNode);
 
 // Returns true if word is in dictionary, else false
 bool check(const char *word) {
-  // TODO
+  node *wordChain = table[hash(word)];
+
+  if (wordChain != NULL) {
+    return traverse_chain_and_compare(wordChain, word);
+  }
+
   return false;
 }
 
@@ -40,7 +47,7 @@ unsigned int hash(const char *word) {
   }
 
   hashsum = hashsum % N;
-  printf("Hashsum: %i\n", hashsum);
+  // printf("Hashsum: %i\n", hashsum);
   return hashsum;
 }
 
@@ -84,7 +91,7 @@ unsigned int size(void) {
     }
   }
 
-  printf("DICT SIZE %i\n", count);
+  // printf("DICT SIZE %i\n", count);
   return count;
 }
 
@@ -96,8 +103,47 @@ unsigned int traverse_chain(node *curNode, int count) {
   return traverse_chain(curNode->next, count + 1);
 }
 
+// I think I should be using a "callback" or I think it's curried??? function
+// for this and change my original traverse chain. but well, here, we just
+// duplicate code and repeat ourselves!
+unsigned int traverse_chain_and_compare(node *curNode, const char *word) {
+  if (strcmp(word, curNode->word) == 0) {
+    return true;
+  }
+
+  if (curNode->next == NULL) {
+    return false;
+  }
+
+  return traverse_chain_and_compare(curNode->next, word);
+}
+
 // Unloads dictionary from memory, returning true if successful, else false
 bool unload(void) {
-  // TODO
-  return false;
+  for (int i = 0; i < N; i++) {
+    free(table[i]);
+    table[i] = NULL;
+  }
+
+  bool all_null = true;
+  for (int i = 0; i < N; i++) {
+    if (table[i] != NULL) {
+      all_null = false;
+    }
+  }
+
+  if (all_null) {
+    printf("returning true");
+  } else {
+    printf("returning false");
+  }
+  return true;
+}
+
+void traverse_chain_and_free(node *curNode) {
+  if (curNode->next == NULL) {
+    return free(curNode);
+  }
+
+  return traverse_chain_and_free(curNode->next);
 }
