@@ -22,6 +22,9 @@ typedef struct node {
 // Hash table
 node *table[N];
 
+// My Func Signitures
+unsigned int traverse_chain(node *curNode, int count);
+
 // Returns true if word is in dictionary, else false
 bool check(const char *word) {
   // TODO
@@ -59,11 +62,11 @@ bool load(const char *dictionary) {
       curWord[curLetter] = '\0';
       curLetter = 0;
       hashsum = hash(curWord);
-
-      node *baseNode = table[hashsum];
-      node newNode = {"", baseNode};
-      strcpy(newNode.word, curWord);
-      table[hashsum] = &newNode;
+      ;
+      node *newNode = malloc(sizeof(node));
+      strcpy(newNode->word, curWord);
+      newNode->next = table[hashsum];
+      table[hashsum] = newNode;
     }
     curWord[curLetter] = c[0];
     curLetter++;
@@ -77,15 +80,20 @@ unsigned int size(void) {
   int count = 0;
   for (int i = 0; i < N; i++) {
     if (table[i] != NULL) {
-      count++;
-      if (table[i]->next != NULL) {
-        count += 1;  // rescursivly grab all in next chain and add
-      }
+      count = traverse_chain(table[i], count);
     }
   }
 
   printf("DICT SIZE %i\n", count);
   return count;
+}
+
+unsigned int traverse_chain(node *curNode, int count) {
+  if (curNode->next == NULL) {
+    return count + 1;
+  }
+
+  return traverse_chain(curNode->next, count + 1);
 }
 
 // Unloads dictionary from memory, returning true if successful, else false
