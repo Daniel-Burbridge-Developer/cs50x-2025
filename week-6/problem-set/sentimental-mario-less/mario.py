@@ -4,7 +4,7 @@ from cs50 import get_int
 def main():
     num_height = 0
     height = ""
-    while (num_height > 8) or (num_height < 0):
+    while (num_height > 8) or (num_height <= 0):
         height = get_int("Height: ")
         num_height = int(height)
 
