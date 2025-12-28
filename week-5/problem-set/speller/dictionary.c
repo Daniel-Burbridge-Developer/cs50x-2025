@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <sys/stat.h>
 
 // Represents a node in a hash table
@@ -43,7 +44,7 @@ unsigned int hash(const char *word) {
   // TODO: Improve this hash function
   int hashsum = 0;
   for (int i = 0; word[i] != '\0'; i++) {
-    hashsum += (int)word[i];
+    hashsum += tolower(word[i]);
   }
 
   hashsum = hashsum % N;
@@ -74,10 +75,13 @@ bool load(const char *dictionary) {
       strcpy(newNode->word, curWord);
       newNode->next = table[hashsum];
       table[hashsum] = newNode;
+    } else {
+      curWord[curLetter] = c[0];
+      curLetter++;
     }
-    curWord[curLetter] = c[0];
-    curLetter++;
   }
+
+  fclose(dict);
 
   return true;
 }
@@ -107,7 +111,7 @@ unsigned int traverse_chain(node *curNode, int count) {
 // for this and change my original traverse chain. but well, here, we just
 // duplicate code and repeat ourselves!
 unsigned int traverse_chain_and_compare(node *curNode, const char *word) {
-  if (strcmp(word, curNode->word) == 0) {
+  if (strcasecmp(word, curNode->word) == 0) {
     return true;
   }
 
@@ -121,29 +125,18 @@ unsigned int traverse_chain_and_compare(node *curNode, const char *word) {
 // Unloads dictionary from memory, returning true if successful, else false
 bool unload(void) {
   for (int i = 0; i < N; i++) {
-    free(table[i]);
-    table[i] = NULL;
+    traverse_chain_and_free(table[i]);
   }
 
-  bool all_null = true;
-  for (int i = 0; i < N; i++) {
-    if (table[i] != NULL) {
-      all_null = false;
-    }
-  }
-
-  if (all_null) {
-    printf("returning true");
-  } else {
-    printf("returning false");
-  }
   return true;
 }
 
 void traverse_chain_and_free(node *curNode) {
-  if (curNode->next == NULL) {
-    return free(curNode);
+  if (curNode == NULL) {
+    return;
+  } else {
+    traverse_chain_and_free(curNode->next);
   }
-
-  return traverse_chain_and_free(curNode->next);
+  free(curNode);
+  return;
 }
