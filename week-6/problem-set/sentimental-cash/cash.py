@@ -1,8 +1,8 @@
-from cs50 import get_int
+from cs50 import get_float
 
 
 def main():
-    print("Hello from sentimental-cash!")
+    get_float()
 
 
 if __name__ == "__main__":
