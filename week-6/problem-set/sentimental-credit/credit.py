@@ -27,7 +27,8 @@ def check_type_by_length(card):
     MASTERCARD_LENGTH = 16
     VISA_LENGTHS = [13, 16]
 
-    digit_count = re.match("%\{16}", str(card))
+    digit_count = len(str(card))
+    print(f"DIGIT COUNT: {digit_count}")
 
     if digit_count == AMEX_LENGTH:
         return "AMEX"
@@ -46,7 +47,8 @@ def check_type_by_prefix(card):
     MASTERCARD_PREFIXS = [51, 52, 53, 54, 55]
     VISA_PREFIXS = [40, 41, 42, 43, 44, 45, 46, 47, 48, 49]
 
-    prefix = re.split("^\d{2}", str(card))
+    prefix = int(str(card)[0:2])
+
     print(f"PREFIX: {prefix}")
 
     if prefix in AMEX_PREFIXS:
