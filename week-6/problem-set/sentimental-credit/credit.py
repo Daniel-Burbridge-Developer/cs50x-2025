@@ -29,11 +29,11 @@ def check_type_by_length(card):
     if digit_count == AMEX_LENGTH:
         potential_cards.append("AMEX")
 
-    if digit_count == VISA_LENGTHS[0]:
-        potential_cards.append("MASTERCARD")
+    if digit_count in VISA_LENGTHS:
+        potential_cards.append("VISA")
 
     if digit_count == MASTERCARD_LENGTH:
-        potential_cards.append("VISA")
+        potential_cards.append("MASTERCARD")
 
     return potential_cards
 
