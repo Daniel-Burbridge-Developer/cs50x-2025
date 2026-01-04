@@ -64,26 +64,26 @@ def check_type_by_prefix(card):
 
 
 def validate_card(card):
-    muliplier_digits = int(str(card)[-2::-2])
-    print(f"MDIG: {muliplier_digits}")
+    multiplier_digits = int(str(card)[-2::-2])
     addition_digits = int(str(card)[-1::-2])
-    print(f"ADIG: {addition_digits}")
 
-    for digit in str(muliplier_digits):
-        digit = digit * 2
+    sum_one = 0
 
-    for digit in str(muliplier_digits):
-        digit = (int(digit) // 10) + (int(digit) % 10)
+    for digit in str(multiplier_digits):
+        d = int(digit) * 2
+        if d > 9:
+            sum_one += (d // 10) + (d % 10)
+        else:
+            sum_one += d
 
-    print(f"MTIMESDIG: {muliplier_digits}")
+    sum_two = 0
 
-    all_digits = muliplier_digits + addition_digits
-    print(f"ALLDIG: {all_digits}")
+    for digit in str(addition_digits):
+        sum_two += int(digit)
 
-    sum = 0
-    for digit in str(all_digits):
-        sum += int(digit)
-    print(f"SUM {sum}")
+    checkSum = sum_one + sum_two
+
+    return checkSum % 10
 
 
 def report_card_type(card_type):
