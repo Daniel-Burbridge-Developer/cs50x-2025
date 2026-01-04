@@ -1,0 +1,8 @@
+1) Q. If songs.db contains the top 100 songs of one listener from 2018, how would you characterize their audio aura?
+1) A. The audio aura can be characterized by calculating the average energy, valence, and danceability of the songs using the query: `SELECT AVG(energy), AVG(valence), AVG(danceability) FROM songs;` from here, I would categorise them based on the values and a pre-determined metic
+
+2) Q. Hypothesize about why the way you’ve calculated this aura might not be very representative of the listener. What better ways of calculating this aura would you propose?
+2) A. The user may have a wide preference of music, or a particular artist may have dominated their listening. a more accurate reprsentation would be to use all of their music instead of top 100.
+      The user may also like extremes in music, if the user liked clasical, and heavy metal, the average of these may land them somewhere in "country" or another category. This would not represent the user.
+      Calculating based on medians may be more representative. 
+      Lastly, Music the user intentionally selected, rather than music that auto-played should be weighted higher, as the user was actively seeking out these songs.
