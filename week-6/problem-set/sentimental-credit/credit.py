@@ -1,5 +1,4 @@
 from cs50 import get_int
-import re
 
 
 def main():
@@ -13,6 +12,7 @@ def get_card_type(card):
     print(type_by_length)
     type_by_prefix = check_type_by_prefix(card)
     print(type_by_prefix)
+    validate_card(card)
 
     if type_by_length == type_by_prefix:
         return type_by_length
@@ -61,6 +61,29 @@ def check_type_by_prefix(card):
         return "VISA"
 
     return None
+
+
+def validate_card(card):
+    muliplier_digits = int(str(card)[-2::-2])
+    print(f"MDIG: {muliplier_digits}")
+    addition_digits = int(str(card)[-1::-2])
+    print(f"ADIG: {addition_digits}")
+
+    for digit in str(muliplier_digits):
+        digit = digit * 2
+
+    for digit in str(muliplier_digits):
+        digit = (int(digit) // 10) + (int(digit) % 10)
+
+    print(f"MTIMESDIG: {muliplier_digits}")
+
+    all_digits = muliplier_digits + addition_digits
+    print(f"ALLDIG: {all_digits}")
+
+    sum = 0
+    for digit in str(all_digits):
+        sum += int(digit)
+    print(f"SUM {sum}")
 
 
 def report_card_type(card_type):
