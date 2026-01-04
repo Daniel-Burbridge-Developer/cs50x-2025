@@ -3,43 +3,39 @@ from cs50 import get_int
 
 def main():
     card = get_int("NUMBER: ")
-    card_type = get_card_type(card)
-    report_card_type(card_type)
+    report_card_type(get_card_type(card), validate_card(card))
 
 
 def get_card_type(card):
     type_by_length = check_type_by_length(card)
-    print(type_by_length)
     type_by_prefix = check_type_by_prefix(card)
-    print(type_by_prefix)
-    validate_card(card)
 
-    if type_by_length == type_by_prefix:
-        return type_by_length
+    for type in type_by_length:
+        if type in type_by_prefix:
+            return type
 
-    return None
+    return "INVALID"
 
 
 def check_type_by_length(card):
-    # Refactor to return array of potential types
-
     AMEX_LENGTH = 15
     MASTERCARD_LENGTH = 16
     VISA_LENGTHS = [13, 16]
 
     digit_count = len(str(card))
-    print(f"DIGIT COUNT: {digit_count}")
+
+    potential_cards = []
 
     if digit_count == AMEX_LENGTH:
-        return "AMEX"
+        potential_cards.append("AMEX")
 
     if digit_count == VISA_LENGTHS[0]:
-        return "VISA"
+        potential_cards.append("MASTERCARD")
 
     if digit_count == MASTERCARD_LENGTH:
-        return "VISA OR MASTERCARD"
+        potential_cards.append("VISA")
 
-    return None
+    return potential_cards
 
 
 def check_type_by_prefix(card):
@@ -47,20 +43,20 @@ def check_type_by_prefix(card):
     MASTERCARD_PREFIXS = [51, 52, 53, 54, 55]
     VISA_PREFIXS = [40, 41, 42, 43, 44, 45, 46, 47, 48, 49]
 
+    potential_cards = []
+
     prefix = int(str(card)[0:2])
 
-    print(f"PREFIX: {prefix}")
-
     if prefix in AMEX_PREFIXS:
-        return "AMEX"
+        potential_cards.append("AMEX")
 
     if prefix in MASTERCARD_PREFIXS:
-        return "MASTERCARD"
+        potential_cards.append("MASTERCARD")
 
     if prefix in VISA_PREFIXS:
-        return "VISA"
+        potential_cards.append("VISA")
 
-    return None
+    return potential_cards
 
 
 def validate_card(card):
@@ -82,12 +78,14 @@ def validate_card(card):
         sum_two += int(digit)
 
     checkSum = sum_one + sum_two
+    return checkSum % 10 == 0
 
-    return checkSum % 10
 
-
-def report_card_type(card_type):
-    print(card_type)
+def report_card_type(card_type, valid):
+    if valid:
+        print(card_type)
+    else:
+        print("INVALID")
 
 
 if __name__ == "__main__":
