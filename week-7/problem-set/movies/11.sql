@@ -1,21 +1,9 @@
 -- 11. Titles of the five highest rated movies (in order) that Chadwick Boseman starred in, starting with the highest rated
--- This one is certainly wrong currently.
-SELECT title
+SELECT DISTINCT title
 FROM movies
-WHERE id IN (
-        SELECT movie_id
-        FROM ratings
-        WHERE movie_id IN (
-                (
-                    SELECT movie_id
-                    FROM stars
-                    WHERE person_id IN (
-                            SELECT id
-                            FROM people
-                            WHERE name = 'Chadwick Boseman'
-                        )
-                )
-            )
-        ORDER BY rating DESC
-        LIMIT 5
-    )
+    JOIN stars ON movies.id = stars.movie_id
+    JOIN people ON stars.person_id = people.id
+    JOIN ratings ON stars.movie_id = ratings.movie_id
+WHERE people.name = 'Chadwick Boseman'
+ORDER BY ratings.rating DESC
+LIMIT 5
