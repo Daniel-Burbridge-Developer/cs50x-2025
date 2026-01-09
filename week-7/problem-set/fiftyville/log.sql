@@ -178,3 +178,7 @@ WHERE phone_number IN (
             AND phone_calls.day = 28
             AND phone_calls.duration < 60
     ) -- Found Philip! ...
+    -- Oops, I didn't think this through. Logan is an airport, Not a City.
+SELECT city
+FROM airports
+WHERE full_name = "Logan International Airport" -- Boston!
