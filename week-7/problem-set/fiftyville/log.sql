@@ -161,4 +161,20 @@ WHERE airports.city = 'Fiftyville'
     )
 ORDER BY minute ASC
 LIMIT 1 -- 18|8|6|2025|7|29|16|0|8|CSF|Fiftyville Regional Airport|Fiftyville|18|3592750733|4C|514354|Diana|(770) 555-1861|3592750733|322W7JE
-    -- Found you Diana!
+    -- Found you Diana! destination airport is airport with id of 6, let's grab that quickly. 
+SELECT full_name
+FROM airports
+WHERE id = 6 -- Logan International Airport
+    -- Since we know the theif is Diana, we can check her calls from the day.
+SELECT name
+FROM people
+WHERE phone_number IN (
+        SELECT receiver
+        FROM phone_calls
+            JOIN people ON people.phone_number = phone_calls.caller
+        WHERE people.name = 'Diana'
+            AND phone_calls.year = 2025
+            AND phone_calls.month = 7
+            AND phone_calls.day = 28
+            AND phone_calls.duration < 60
+    ) -- Found Philip! ...
