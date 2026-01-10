@@ -46,7 +46,8 @@ This project is being completed, on my dedicated development server via SSH & no
 |  7   | **Songs (SQL)**           | Database Design, Joins, Indexing                 |   ✅   |   2026-01-04    | The 'answers.txt' type questions always throw me for a loop                                         |
 |  7   | **Movies (SQL)**          | Database Design, Joins, Indexing                 |   ✅   |   2026-01-07    |                                                                                                     |
 |  7   | **Fiftyville (SQL)**      | Database Design, Joins, Indexing                 |   ✅   |   2026-01-10    | One wrong step, one wrong query, a rabbit hole later....                                            |
-|  8   | **PSET 8 (Web)**          | HTML, CSS, JavaScript, DOM Manipulation          |        |                 |                                                                                                     |
+|  8   | **Trivia (Web)**          | HTML, CSS, JavaScript, DOM Manipulation          |  ⌛️   |                 |                                                                                                     |
+|  8   | **Homepage (Web)**        | HTML, CSS, JavaScript, DOM Manipulation          |        |                 |                                                                                                     |
 |  9   | **PSET 9 (Flask)**        | Web Development, MVC Pattern, Backend Logic      |        |                 |                                                                                                     |
 |  10  | **Final Project**         | Capstone: (Specify your own concepts here)       |        |                 |                                                                                                     |
 
