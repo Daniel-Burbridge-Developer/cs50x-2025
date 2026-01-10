@@ -1,31 +1,85 @@
 <!DOCTYPE html>
 
 <html lang="en">
-    <head>
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
-        <link href="styles.css" rel="stylesheet">
-        <title>Trivia!</title>
-        <script>
-            // TODO: Add code to check answers to questions
-        </script>
-    </head>
-    <body>
-        <div class="header">
-            <h1>Trivia!</h1>
-        </div>
+  <head>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <link href="styles.css" rel="stylesheet" />
+    <title>Trivia!</title>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        let body = document.querySelector("body");
 
-        <div class="container">
-            <div class="section">
-                <h2>Part 1: Multiple Choice </h2>
-                <hr>
-                <!-- TODO: Add multiple choice question here -->
-            </div>
+        let wrongButtons = document.querySelectorAll(".wrong");
 
-            <div class="section">
-                <h2>Part 2: Free Response</h2>
-                <hr>
-                <!-- TODO: Add free response question here -->
-            </div>
-        </div>
-    </body>
+        wrongButtons.forEach((button) =>
+          button.addEventListener("click", function () {
+            button.style.backgroundColor = "red";
+            document.querySelector("#freeanswerzone").textContent = "Incorrect";
+          })
+        );
+
+        document
+          .querySelector("#correct")
+          .addEventListener("click", function () {
+            this.style.backgroundColor = "green";
+            document.querySelector("#answerzone").textContent = "Correct!";
+          });
+
+        document
+          .querySelector("#submitdistro")
+          .addEventListener("click", function () {
+            let answer = document.querySelector("#distro").value;
+            // console.log(answer);
+            if (answer.toLowerCase() == "popos") {
+              document.querySelector("#distro").style.backgroundColor = "green";
+              document.querySelector("#freeanswerzone").textContent =
+                "Correct!";
+            } else {
+              document.querySelector("#distro").style.backgroundColor = "red";
+              document.querySelector("#freeanswerzone").textContent =
+                "incorrect";
+            }
+          });
+      });
+    </script>
+  </head>
+  <body>
+    <div class="header">
+      <h1>Trivia!</h1>
+    </div>
+
+    <div class="container">
+      <div class="section">
+        <h2>Part 1: Multiple Choice</h2>
+        <hr />
+        <!-- TODO: Add multiple choice question here -->
+        <h3>What Linux Distro did I recently install?</h3>
+        <h4 id="answerzone"></h4>
+        <button class="wrong">Ubuntu</button>
+        <button class="wrong">Debian</button>
+        <button class="wrong">Arch</button>
+        <button class="wrong">Mint</button>
+        <button id="correct">PopOS</button>
+      </div>
+
+      <div class="section">
+        <h2>Part 2: Free Response</h2>
+        <hr />
+        <!-- TODO: Add free response question here -->
+        <h3>What is my current favourite DE linux disto?</h3>
+        <h4 id="freeanswerzone"></h4>
+        <input
+          autocomplete="off"
+          autofocus
+          id="distro"
+          placeholder="popOS"
+          type="text"
+        />
+        <button id="submitdistro">Submit</button>
+      </div>
+    </div>
+  </body>
 </html>
