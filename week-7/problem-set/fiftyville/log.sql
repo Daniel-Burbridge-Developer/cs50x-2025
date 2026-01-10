@@ -182,3 +182,152 @@ WHERE phone_number IN (
 SELECT city
 FROM airports
 WHERE full_name = "Logan International Airport" -- Boston!
+    -- Well, I would have arrested the wrong person.... Back to the drawing board....
+    -- OKAY, I see where I went wrong, I was only considering the minute, and not the hour. 
+SELECT flights.id,
+    flights.hour,
+    flights.minute,
+    people.name
+FROM flights
+    JOIN airports ON flights.origin_airport_id = airports.id
+    JOIN passengers ON flights.id = passengers.flight_id
+    JOIN people ON passengers.passport_number = people.passport_number
+WHERE airports.city = 'Fiftyville'
+    AND year = 2025
+    AND month = 7
+    AND day = 29
+    AND people.id IN (
+        SELECT person_id
+        FROM bank_accounts
+        WHERE account_number IN (
+                SELECT account_number
+                FROM atm_transactions
+                WHERE year = 2025
+                    AND month = 7
+                    AND day = 28
+                    AND atm_location = 'Leggett Street' -- okay, so "transaction type" is listed as withdraw or deposit
+                    AND transaction_type = 'withdraw'
+            )
+            AND person_id IN (
+                SELECT people.id
+                FROM people
+                    JOIN bakery_security_logs on people.license_plate = bakery_security_logs.license_plate
+                    JOIN phone_calls on phone_calls.caller = people.phone_number
+                WHERE bakery_security_logs.year = 2025
+                    AND bakery_security_logs.month = 7
+                    AND bakery_security_logs.day = 28
+                    AND hour = 10
+                    AND minute >= 15
+                    AND minute <= 35
+                    AND duration < 60
+            )
+    )
+ORDER BY hour,
+    minute ASC -- Now to Decide between Bruce and Taylor.
+    --     36|8|20|Bruce
+    -- 36|8|20|Taylor
+    -- 18|16|0|Diana
+    -- I can tighten the window based on the interview of "within 10 minutes"
+SELECT flights.id,
+    flights.hour,
+    flights.minute,
+    people.name,
+    airports.city,
+    people.phone_number
+FROM flights
+    JOIN airports ON flights.origin_airport_id = airports.id
+    JOIN passengers ON flights.id = passengers.flight_id
+    JOIN people ON passengers.passport_number = people.passport_number
+WHERE airports.city = 'Fiftyville'
+    AND year = 2025
+    AND month = 7
+    AND day = 29
+    AND people.id IN (
+        SELECT person_id
+        FROM bank_accounts
+        WHERE account_number IN (
+                SELECT account_number
+                FROM atm_transactions
+                WHERE year = 2025
+                    AND month = 7
+                    AND day = 28
+                    AND atm_location = 'Leggett Street' -- okay, so "transaction type" is listed as withdraw or deposit
+                    AND transaction_type = 'withdraw'
+            )
+            AND person_id IN (
+                SELECT people.id
+                FROM people
+                    JOIN bakery_security_logs on people.license_plate = bakery_security_logs.license_plate
+                    JOIN phone_calls on phone_calls.caller = people.phone_number
+                WHERE bakery_security_logs.year = 2025
+                    AND bakery_security_logs.month = 7
+                    AND bakery_security_logs.day = 28
+                    AND hour = 10
+                    AND minute >= 15
+                    AND minute <= 25
+                    AND duration < 60
+            )
+    )
+ORDER BY hour,
+    minute ASC -- Got you Bruce! And the rest should be pretty easy.... 
+    -- just redoing what I did for Diana, but with the correct flight and call IDs.
+SELECT flights.id,
+    flights.hour,
+    flights.minute,
+    people.name,
+    flights.destination_airport_id,
+    people.phone_number
+FROM flights
+    JOIN airports ON flights.origin_airport_id = airports.id
+    JOIN passengers ON flights.id = passengers.flight_id
+    JOIN people ON passengers.passport_number = people.passport_number
+WHERE airports.city = 'Fiftyville'
+    AND year = 2025
+    AND month = 7
+    AND day = 29
+    AND people.id IN (
+        SELECT person_id
+        FROM bank_accounts
+        WHERE account_number IN (
+                SELECT account_number
+                FROM atm_transactions
+                WHERE year = 2025
+                    AND month = 7
+                    AND day = 28
+                    AND atm_location = 'Leggett Street' -- okay, so "transaction type" is listed as withdraw or deposit
+                    AND transaction_type = 'withdraw'
+            )
+            AND person_id IN (
+                SELECT people.id
+                FROM people
+                    JOIN bakery_security_logs on people.license_plate = bakery_security_logs.license_plate
+                    JOIN phone_calls on phone_calls.caller = people.phone_number
+                WHERE bakery_security_logs.year = 2025
+                    AND bakery_security_logs.month = 7
+                    AND bakery_security_logs.day = 28
+                    AND hour = 10
+                    AND minute >= 15
+                    AND minute <= 25
+                    AND duration < 60
+            )
+    )
+ORDER BY hour,
+    minute ASC -- Got you Bruce! And the rest should be pretty easy.... just redoing what I did for Diana, but with the correct flight and call IDs.
+    -- 36|8|20|Bruce|4|(367) 555 -5533 
+    -- 18|16|0|Diana|6|(770) 555-1861
+SELECT city
+FROM airports
+WHERE id = 4 -- New York City
+    -- And lastly, who did Bruce call?
+SELECT name
+FROM people
+WHERE phone_number IN (
+        SELECT receiver
+        FROM phone_calls
+            JOIN people ON people.phone_number = phone_calls.caller
+        WHERE people.name = 'Bruce'
+            AND phone_calls.year = 2025
+            AND phone_calls.month = 7
+            AND phone_calls.day = 28
+            AND phone_calls.duration < 60
+    ) -- Robin
