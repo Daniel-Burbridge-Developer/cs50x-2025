@@ -1,0 +1,25 @@
+# Specifications
+
+## HTML Tags
+- `<link>`
+- `<script>`
+- `<nav>`
+- `<div>`
+- `<a>`
+- `<button>`
+- `<span>`
+- `<ul>`
+- `<li>`
+- `<h1>`
+
+## CSS Properties
+- `font-size`
+- `margin`
+- `padding`
+- `background-color`
+- `text-align`
+
+## Javascript & Bootstrap
+- JavaScript: Easter egg on CS50x title (click to change color)
+- Bootstrap 5.3.8: Navigation bar, accordion components, responsive layout
+
