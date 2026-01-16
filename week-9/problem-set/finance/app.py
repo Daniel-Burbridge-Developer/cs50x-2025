@@ -80,7 +80,11 @@ def index():
     total_valuation = sum + user["cash"]
 
     return render_template(
-        "index.html", user_stocks=user_stocks, user=user, pvalue=total_valuation
+        "index.html",
+        user_stocks=user_stocks,
+        user=user,
+        pvalue=total_valuation,
+        symbols=unique_symbols,
     )
 
 
