@@ -2,14 +2,12 @@
 %}
 <form action="/sell" method="post">
   <div class="mb-3">
-    <input
-      autocomplete="off"
-      autofocus
-      class="form-control mx-auto w-auto"
-      name="symbol"
-      placeholder="Stock Symbol eg nflx"
-      type="text"
-    />
+    <select name="symbol" class="form-control mx-auto w-auto">
+    <option disabled selected> Select Symbol</option>>
+    {% for symbol in symbols %}
+    <option>{{symbol}}</option>
+      {% endfor %}
+      </select>
   </div>
   <div class="mb-3">
     <input

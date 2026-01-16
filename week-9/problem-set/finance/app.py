@@ -308,4 +308,12 @@ def sell():
 
         return redirect("/")
     else:
-        return render_template("/sell.html")
+        user_id = session.get("user_id")
+
+        user_transactions = db.execute(
+            "SELECT * FROM transactions WHERE user_id = ?", user_id
+        )
+
+        unique_symbols = {t["symbol"] for t in user_transactions}
+
+        return render_template("/sell.html", symbols=unique_symbols)
