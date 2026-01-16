@@ -1,0 +1,22 @@
+{% extends "layout.html" %} {% block title %} Index {% endblock %} {% block main
+%}
+<h1>Hello {{ user.username }}</h1>
+<h2>Balance {{user.cash}}</h2>
+<h3>Net Worth {{pvalue}}</h3>
+<table>
+  <tr>
+    <th>Stock</th>
+    <th>Stock Held</th>
+    <th>Cur Price</th>
+    <th>Total Value</th>
+  </tr>
+  {% for stock, info in user_stocks.items() %}
+  <tr>
+    <td>{{ info.name }}</td>
+    <td>{{ info.holdings }}</td>
+    <td>{{ info.price }}</td>
+    <td>{{ info.price * info.holdings }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

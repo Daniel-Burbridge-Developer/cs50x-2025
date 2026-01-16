@@ -35,7 +35,53 @@ def after_request(response):
 @login_required
 def index():
     """Show portfolio of stocks"""
-    return apology("TODO")
+    user_id = session.get("user_id")
+    user_transactions = db.execute(
+        "SELECT * FROM transactions WHERE user_id = ?", user_id
+    )
+    user = db.execute("SELECT * FROM users WHERE id = ?", user_id)[0]
+
+    unique_symbols = {t["symbol"] for t in user_transactions}
+    stock_market = {}
+
+    for symbol in unique_symbols:
+        curstock = lookup(symbol)
+        if symbol in stock_market:
+            stock_market[symbol]["price"] = curstock["price"]
+            stock_market[symbol]["name"] = curstock["name"]
+        else:
+            stock_market[symbol] = {
+                "price": curstock["price"],
+                "name": curstock["name"],
+            }
+    user_stocks = {}
+
+    for transaction in user_transactions:
+        symbol = transaction["symbol"]
+        name = stock_market[symbol]["name"]
+        price = stock_market[symbol]["price"]
+        shares = transaction["shares"]
+
+        if symbol in user_stocks:
+            user_stocks[symbol]["holdings"] += shares
+            user_stocks[symbol]["total"] = user_stocks[symbol]["holdings"] * price
+        else:
+            user_stocks[symbol] = {
+                "name": name,
+                "holdings": shares,
+                "price": price,
+                "total": shares * price,
+            }
+
+    sum = 0
+    for name in user_stocks:
+        sum += user_stocks[name]["total"]
+
+    total_valuation = sum + user["cash"]
+
+    return render_template(
+        "index.html", user_stocks=user_stocks, user=user, pvalue=total_valuation
+    )
 
 
 @app.route("/buy", methods=["GET", "POST"])
@@ -49,7 +95,8 @@ def buy():
             return apology("must provide a stock symbol", 403)
         if not shares:
             return apology("must provide amount of shares to buy", 403)
-
+        if int(shares) < 1:
+            return apology("shares to buy must be a postive number")
         resp = lookup(symbol)
         if not resp:
             return apology(
@@ -57,22 +104,30 @@ def buy():
             )
 
         user = session.get("user_id")
-        userFunds = db.execute("SELECT cash FROM users WHERE id = ?", user)
-        stockName = resp.name
-        stockCost = resp.price
-        stockSymbol = resp.symbol
+        userFundsRow = db.execute("SELECT cash FROM users WHERE id = ?", user)
+        userFunds = userFundsRow[0]["cash"]
+        stockCost = resp["price"]
+        stockSymbol = resp["symbol"]
 
-        transactionCost = int(stockCost) * int(shares)
+        transactionCost = float(stockCost) * int(shares)
 
-        if transactionCost > userFunds:
+        if transactionCost > float(userFunds):
             return apology(
                 f"You do not have enough funds to make this transaction, transaction cost {usd(transactionCost)}"
             )
 
-        # TODO
-        # take funds away from users money
-        # add to table in database User ID, Stock Owned (increment if already own some), on the stock symbol or insert.
-        # Creation of table still required.
+        db.execute(
+            "UPDATE users SET cash = cash - ? WHERE id = ?", transactionCost, user
+        )
+
+        db.execute(
+            "INSERT into transactions (user_id, symbol, shares, price) VALUES (?, ?, ?, ?)",
+            user,
+            stockSymbol,
+            shares,
+            stockCost,
+        )
+
         return redirect("/")
     else:
         return render_template("/buy.html")
@@ -191,5 +246,50 @@ def register():
 @app.route("/sell", methods=["GET", "POST"])
 @login_required
 def sell():
-    """Sell shares of stock"""
-    return apology("TODO")
+    if request.method == "POST":
+        symbol = request.form.get("symbol")
+        shares = request.form.get("shares")
+
+        if not symbol:
+            return apology("must provide a stock symbol", 403)
+        if not shares:
+            return apology("must provide amount of shares to sell", 403)
+        if int(shares) < 1:
+            return apology("shares to sell must be a postive number")
+        resp = lookup(symbol)
+        if not resp:
+            return apology(
+                "Error fetching stock, are you sure it's a valid symbol?", 403
+            )
+
+        user = session.get("user_id")
+        ## Check if user owns this stock, if they do not - return apology.
+        ## HERE DOWN IS JUST A COPY OF BUY -> PROBS NEED DELETE MOST, GOING TO INDEX FOR NOW
+
+        userFundsRow = db.execute("SELECT cash FROM users WHERE id = ?", user)
+        userFunds = userFundsRow[0]["cash"]
+        stockCost = resp["price"]
+        stockSymbol = resp["symbol"]
+
+        transactionCost = float(stockCost) * (int(shares) * -1)
+
+        if transactionCost > float(userFunds):
+            return apology(
+                f"You do not have enough funds to make this transaction, transaction cost {usd(transactionCost)}"
+            )
+
+        db.execute(
+            "UPDATE users SET cash = cash - ? WHERE id = ?", transactionCost, user
+        )
+
+        db.execute(
+            "INSERT into transactions (user_id, symbol, shares, price) VALUES (?, ?, ?, ?)",
+            user,
+            stockSymbol,
+            shares,
+            stockCost,
+        )
+
+        return redirect("/")
+    else:
+        return render_template("/buy.html")
