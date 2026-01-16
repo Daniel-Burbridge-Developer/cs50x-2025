@@ -39,3 +39,11 @@ th, td
     text-align: left;
 }
 
+tr.buystock {
+    background-color: aquamarine;
+}
+
+tr.sellstock {
+    background-color: indianred;
+}
+

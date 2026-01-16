@@ -136,8 +136,12 @@ def buy():
 @app.route("/history")
 @login_required
 def history():
-    """Show history of transactions"""
-    return apology("TODO")
+    user = session.get("user_id")
+    transactions = db.execute(
+        "SELECT * FROM transactions WHERE user_id = ? ORDER BY timestamp DESC", user
+    )
+
+    return render_template("/history.html", transactions=transactions)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -250,6 +254,8 @@ def sell():
         symbol = request.form.get("symbol")
         shares = request.form.get("shares")
 
+        symbol = lookup(symbol)["symbol"]
+
         if not symbol:
             return apology("must provide a stock symbol", 403)
         if not shares:
@@ -266,30 +272,40 @@ def sell():
         ## Check if user owns this stock, if they do not - return apology.
         ## HERE DOWN IS JUST A COPY OF BUY -> PROBS NEED DELETE MOST, GOING TO INDEX FOR NOW
 
-        userFundsRow = db.execute("SELECT cash FROM users WHERE id = ?", user)
-        userFunds = userFundsRow[0]["cash"]
+        stockcount = db.execute(
+            "SELECT SUM(shares) AS shareCount FROM transactions WHERE symbol = ? AND user_id = ?",
+            symbol,
+            user,
+        )[0]["shareCount"]
+
+        if not stockcount:
+            return apology(
+                "Sorry, you don't have that stock! ... not sure how that hapened"
+            )
+
+        if int(shares) <= 0:
+            return apology("Must be a positive number")
+
+        if int(stockcount) < int(shares):
+            return apology(f"You don't have that many shares! You have {stockcount}")
+
         stockCost = resp["price"]
         stockSymbol = resp["symbol"]
 
-        transactionCost = float(stockCost) * (int(shares) * -1)
-
-        if transactionCost > float(userFunds):
-            return apology(
-                f"You do not have enough funds to make this transaction, transaction cost {usd(transactionCost)}"
-            )
+        transactionProfit = float(stockCost) * (int(shares))
 
         db.execute(
-            "UPDATE users SET cash = cash - ? WHERE id = ?", transactionCost, user
+            "UPDATE users SET cash = cash + ? WHERE id = ?", transactionProfit, user
         )
 
         db.execute(
             "INSERT into transactions (user_id, symbol, shares, price) VALUES (?, ?, ?, ?)",
             user,
             stockSymbol,
-            shares,
+            int(shares) * -1,
             stockCost,
         )
 
         return redirect("/")
     else:
-        return render_template("/buy.html")
+        return render_template("/sell.html")
