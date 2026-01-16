@@ -42,7 +42,40 @@ def index():
 @login_required
 def buy():
     """Buy shares of stock"""
-    return apology("TODO")
+    if request.method == "POST":
+        symbol = request.form.get("symbol")
+        shares = request.form.get("shares")
+        if not symbol:
+            return apology("must provide a stock symbol", 403)
+        if not shares:
+            return apology("must provide amount of shares to buy", 403)
+
+        resp = lookup(symbol)
+        if not resp:
+            return apology(
+                "Error fetching stock, are you sure it's a valid symbol?", 403
+            )
+
+        user = session.get("user_id")
+        userFunds = db.execute("SELECT cash FROM users WHERE id = ?", user)
+        stockName = resp.name
+        stockCost = resp.price
+        stockSymbol = resp.symbol
+
+        transactionCost = int(stockCost) * int(shares)
+
+        if transactionCost > userFunds:
+            return apology(
+                f"You do not have enough funds to make this transaction, transaction cost {usd(transactionCost)}"
+            )
+
+        # TODO
+        # take funds away from users money
+        # add to table in database User ID, Stock Owned (increment if already own some), on the stock symbol or insert.
+        # Creation of table still required.
+        return redirect("/")
+    else:
+        return render_template("/buy.html")
 
 
 @app.route("/history")
@@ -106,13 +139,53 @@ def logout():
 @login_required
 def quote():
     """Get stock quote."""
-    return apology("TODO")
+    if request.method == "POST":
+        symbol = request.form.get("symbol")
+
+        if not symbol:
+            return apology("must provide a stock symbol", 403)
+
+        resp = lookup(symbol)
+
+        if not resp:
+            return apology(
+                "Error fetching stock, are you sure it's a valid symbol?", 403
+            )
+
+        return render_template("quoted.html", data=resp)
+    else:
+        return render_template("/quote.html")
 
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
     """Register user"""
-    return apology("TODO")
+    if request.method == "POST":
+        name = request.form.get("username")
+        password = request.form.get("password")
+        confirmation = request.form.get("confirmation")
+        if not name:
+            return apology("must provide username", 403)
+        elif not password:
+            return apology("must provide password", 403)
+        elif not confirmation:
+            return apology("please confirm password", 403)
+        elif not (password == confirmation):
+            return apology("password and confirmation does not match", 403)
+
+        try:
+            id = db.execute(
+                "INSERT INTO users (username, hash) VALUES(?, ?)",
+                name,
+                generate_password_hash(password),
+            )
+            session["user_id"] = id
+        except ValueError:
+            return apology("user already exists", 403)
+
+        return redirect("/")
+    else:
+        return render_template("register.html")
 
 
 @app.route("/sell", methods=["GET", "POST"])
