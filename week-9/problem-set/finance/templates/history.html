@@ -1,5 +1,5 @@
-{% extends "layout.html" %} {% block title %} History {% endblock %} {% block main
-%}
+{% extends "layout.html" %} {% block title %} History {% endblock %} {% block
+main %}
 <h1>HISTORY</h1>
 <table>
   <tr>
@@ -9,19 +9,19 @@
     <th>Quantity</th>
     <th>Time</th>
   </tr>
-  {% for transaction in transactions %}
-    {% if transaction.shares > 0 %}
-    <tr class="buystock">
+  {% for transaction in transactions %} {% if transaction.shares > 0 %}
+  <tr class="buystock">
     <td>BUY</td>
-    {% endif %}
-    {% if transaction.shares < 0 %}
-    <tr class="sellstock">
+    {% endif %} {% if transaction.shares < 0 %}
+  </tr>
+
+  <tr class="sellstock">
     <td>SELL</td>
     {% endif %}
     <td>{{ transaction.symbol }}</td>
-    <td>{{ transaction.price }}</td>
+    <td>{{ transaction.price | usd }}</td>
     <td>{{ transaction.shares | abs }}</td>
-    <td>{{ transaction.timestamp }} </td>
+    <td>{{ transaction.timestamp }}</td>
   </tr>
   {% endfor %}
 </table>

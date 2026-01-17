@@ -77,7 +77,7 @@ def index():
     for name in user_stocks:
         sum += user_stocks[name]["total"]
 
-    total_valuation = sum + user["cash"]
+    total_valuation = usd(sum + user["cash"])
 
     return render_template(
         "index.html",
@@ -96,15 +96,18 @@ def buy():
         symbol = request.form.get("symbol")
         shares = request.form.get("shares")
         if not symbol:
-            return apology("must provide a stock symbol", 403)
+            return apology("must provide a stock symbol", 400)
         if not shares:
-            return apology("must provide amount of shares to buy", 403)
-        if int(shares) < 1:
-            return apology("shares to buy must be a postive number")
+            return apology("must provide amount of shares to buy", 400)
+        if not shares.isdigit():
+            return apology("Shares must be a non-fractional, positive number", 400)
+        if int(shares) == 0:
+            return apology("Shares must be a non-fractional, positive number", 400)
+
         resp = lookup(symbol)
         if not resp:
             return apology(
-                "Error fetching stock, are you sure it's a valid symbol?", 403
+                "Error fetching stock, are you sure it's a valid symbol?", 400
             )
 
         user = session.get("user_id")
@@ -159,11 +162,11 @@ def login():
     if request.method == "POST":
         # Ensure username was submitted
         if not request.form.get("username"):
-            return apology("must provide username", 403)
+            return apology("must provide username", 400)
 
         # Ensure password was submitted
         elif not request.form.get("password"):
-            return apology("must provide password", 403)
+            return apology("must provide password", 400)
 
         # Query database for username
         rows = db.execute(
@@ -174,7 +177,7 @@ def login():
         if len(rows) != 1 or not check_password_hash(
             rows[0]["hash"], request.form.get("password")
         ):
-            return apology("invalid username and/or password", 403)
+            return apology("invalid username and/or password", 400)
 
         # Remember which user has logged in
         session["user_id"] = rows[0]["id"]
@@ -206,16 +209,18 @@ def quote():
         symbol = request.form.get("symbol")
 
         if not symbol:
-            return apology("must provide a stock symbol", 403)
+            return apology("must provide a stock symbol", 400)
 
         resp = lookup(symbol)
 
         if not resp:
             return apology(
-                "Error fetching stock, are you sure it's a valid symbol?", 403
+                "Error fetching stock, are you sure it's a valid symbol?", 400
             )
 
-        return render_template("quoted.html", data=resp)
+        price = usd(resp["price"])
+
+        return render_template("quoted.html", data=price)
     else:
         return render_template("/quote.html")
 
@@ -228,13 +233,13 @@ def register():
         password = request.form.get("password")
         confirmation = request.form.get("confirmation")
         if not name:
-            return apology("must provide username", 403)
+            return apology("must provide username", 400)
         elif not password:
-            return apology("must provide password", 403)
+            return apology("must provide password", 400)
         elif not confirmation:
-            return apology("please confirm password", 403)
+            return apology("please confirm password", 400)
         elif not (password == confirmation):
-            return apology("password and confirmation does not match", 403)
+            return apology("password and confirmation does not match", 400)
 
         try:
             id = db.execute(
@@ -244,7 +249,7 @@ def register():
             )
             session["user_id"] = id
         except ValueError:
-            return apology("user already exists", 403)
+            return apology("user already exists", 400)
 
         return redirect("/")
     else:
@@ -261,15 +266,15 @@ def sell():
         symbol = lookup(symbol)["symbol"]
 
         if not symbol:
-            return apology("must provide a stock symbol", 403)
+            return apology("must provide a stock symbol", 400)
         if not shares:
-            return apology("must provide amount of shares to sell", 403)
+            return apology("must provide amount of shares to sell", 400)
         if int(shares) < 1:
             return apology("shares to sell must be a postive number")
         resp = lookup(symbol)
         if not resp:
             return apology(
-                "Error fetching stock, are you sure it's a valid symbol?", 403
+                "Error fetching stock, are you sure it's a valid symbol?", 400
             )
 
         user = session.get("user_id")

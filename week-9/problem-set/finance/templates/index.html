@@ -2,73 +2,73 @@
 %}
 <div>
   <div>
-<h1>Hello {{ user.username }}</h1>
-<h2>Balance {{user.cash}}</h2>
-<h3>Net Worth {{pvalue}}</h3>
-<table>
-  <tr>
-    <th>Stock</th>
-    <th>Stock Held</th>
-    <th>Cur Price</th>
-    <th>Total Value</th>
-  </tr>
-  {% for stock, info in user_stocks.items() %}
-  <tr>
-    <td>{{ info.name }}</td>
-    <td>{{ info.holdings }}</td>
-    <td>{{ info.price }}</td>
-    <td>{{ info.price * info.holdings }}</td>
-  </tr>
-  {% endfor %}
-</table>
-</div>
-<br />
-<div>
-<form action="/sell" method="post">
-  <div class="mb-3">
-    <select name="symbol" class="form-control mx-auto w-auto">
-    <option disabled selected> Select Symbol</option>>
-    {% for symbol in symbols %}
-    <option>{{symbol}}</option>
+    <h1>Hello {{ user.username }}</h1>
+    <h2>Balance {{user.cash | usd}}</h2>
+    <h3>Net Worth {{pvalue}}</h3>
+    <table>
+      <tr>
+        <th>Stock</th>
+        <th>Stock Held</th>
+        <th>Cur Price</th>
+        <th>Total Value</th>
+      </tr>
+      {% for stock, info in user_stocks.items() %}
+      <tr>
+        <td>{{ info.name }}</td>
+        <td>{{ info.holdings }}</td>
+        <td>{{ info.price }}</td>
+        <td>{{ (info.price * info.holdings) | usd}}</td>
+      </tr>
       {% endfor %}
-      </select>
+    </table>
   </div>
-  <div class="mb-3">
-    <input
-      autocomplete="off"
-      autofocus
-      class="form-control mx-auto w-auto"
-      name="shares"
-      placeholder="Share Quantity To Sell"
-      type="text"
-    />
+  <br />
+  <div>
+    <form action="/sell" method="post">
+      <div class="mb-3">
+        <select name="symbol" class="form-control mx-auto w-auto">
+          <option disabled selected>Select Symbol</option>
+          > {% for symbol in symbols %}
+          <option>{{symbol}}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="mb-3">
+        <input
+          autocomplete="off"
+          autofocus
+          class="form-control mx-auto w-auto"
+          name="shares"
+          placeholder="Share Quantity To Sell"
+          type="text"
+        />
+      </div>
+      <button class="btn btn-primary" type="submit">Sell</button>
+    </form>
+    <br />
+    <div>
+      <form action="/buy" method="post">
+        <div class="mb-3">
+          <select name="symbol" class="form-control mx-auto w-auto">
+            <option disabled selected>Select Symbol</option>
+            > {% for symbol in symbols %}
+            <option>{{symbol}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="mb-3">
+          <input
+            autocomplete="off"
+            autofocus
+            class="form-control mx-auto w-auto"
+            name="shares"
+            placeholder="Share Quantity To Buy"
+            type="text"
+          />
+        </div>
+        <button class="btn btn-primary" type="submit">Buy</button>
+      </form>
+    </div>
   </div>
-  <button class="btn btn-primary" type="submit">Sell</button>
-</form>
-<br />
-<div>
-<form action="/buy" method="post">
-  <div class="mb-3">
-    <select name="symbol" class="form-control mx-auto w-auto">
-    <option disabled selected> Select Symbol</option>>
-    {% for symbol in symbols %}
-    <option>{{symbol}}</option>
-      {% endfor %}
-      </select>
-  </div>
-  <div class="mb-3">
-    <input
-      autocomplete="off"
-      autofocus
-      class="form-control mx-auto w-auto"
-      name="shares"
-      placeholder="Share Quantity To Buy"
-      type="text"
-    />
-  </div>
-  <button class="btn btn-primary" type="submit">Buy</button>
-</form>
-</div>
-</div>
 </div>
 {% endblock %}
