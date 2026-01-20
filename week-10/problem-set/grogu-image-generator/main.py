@@ -6,17 +6,38 @@ from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 
+import schedule
+import time
+
 
 load_dotenv()
-# High temperature config for maximum creativity
+# Adjusts predictability of LLM
 CREATIVE_CONFIG = types.GenerateContentConfig(temperature=1.5)
+
+
 DISCORD_WEBHOOK_URL = os.environ["DISCORD_WEBHOOK_URL"]
 HF_TOKEN = os.environ.get("HF_TOKEN")
-
 OUTPUT_DIR = "./output"
 
 
 def main():
+    schedule.every(1).minute.do(report_idle)
+    schedule.every(1).hour.do(report_wake_up)
+    schedule.every().day.at("6:00").do(report_wake_up)
+
+
+def report_idle():
+    current_time = time.localtime
+    print(f"Idling at: {current_time}")
+
+
+def report_wake_up():
+    current_time = time.localtime
+    print(f"Ive been woken up to run my job! at: {current_time}")
+    do_the_image_stuff()
+
+
+def do_the_image_stuff():
     try:
         prompt, file_name = generate_prompt()
         image_path = generate_image(prompt, file_name)
@@ -27,6 +48,11 @@ def main():
         image_path = generate_image()
         if image_path:
             send_to_discord(image_path, "prompt failed")
+
+
+while True:
+    schedule.run_pending()
+    time.sleep(1)
 
 
 def generate_image(
