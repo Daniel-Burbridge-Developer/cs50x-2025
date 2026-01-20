@@ -21,9 +21,14 @@ OUTPUT_DIR = "./output"
 
 
 def main():
+    print("starting up!")
     schedule.every(1).minute.do(report_idle)
     schedule.every(1).hour.do(report_wake_up)
     schedule.every().day.at("6:00").do(report_wake_up)
+
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
 
 
 def report_idle():
@@ -48,11 +53,6 @@ def do_the_image_stuff():
         image_path = generate_image()
         if image_path:
             send_to_discord(image_path, "prompt failed")
-
-
-while True:
-    schedule.run_pending()
-    time.sleep(1)
 
 
 def generate_image(
