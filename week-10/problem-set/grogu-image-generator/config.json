@@ -1,0 +1,39 @@
+{
+    "models": {
+        "pollinations": {
+            "alias": "pollinations",
+            "preference": 1,
+            "call_method": "URL",
+            "Token": null
+        },
+        "stable-diffusion-xl-base-1": {
+            "alias": "xl-base",
+            "preference": 2,
+            "call_method": "API",
+            "Token": "HF_TOKEN"
+        }
+    },
+    "options": {
+        "characters": [
+            "Grogu",
+            "Groot",
+            "Stitch"
+        ],
+        "styles": [
+            "cute",
+            "scary",
+            "friendly"
+        ]
+    },
+    "schedule": {
+        "frequency": "DAYS",
+        "time_for_daily": "06:00",
+        "interval_for_hours": 1,
+        "interval_for_minutes": 30,
+        "frequency_options": [
+            "DAYS",
+            "HOURS",
+            "MINUTES"
+        ]
+    }
+}

@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 from image import do_the_image_stuff
+from scheduling import start_scheduler
 
 import schedule
 import time
@@ -24,6 +25,7 @@ OUTPUT_DIR = "./output"
 
 def main():
     print("starting up!")
+    start_scheduler()
     schedule.every(1).minute.do(report_idle)
     schedule.every(1).hour.do(report_wake_up)
     schedule.every().day.at("06:00").do(report_wake_up)
