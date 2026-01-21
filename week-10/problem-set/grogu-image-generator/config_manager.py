@@ -66,7 +66,9 @@ class ConfigManager:
 
         old_preference = self.config["models"][target_model]["preference"]
         self.config["models"][target_model]["preference"] = int(new_preference)
-        self.config["models"][swap_model]["preference"] = int(old_preference)
+
+        if swap_model:
+            self.config["m odels"][swap_model]["preference"] = int(old_preference)
 
         self.save()
         return True, "Preference updated"
