@@ -59,8 +59,6 @@ class ConfigManager:
         if not target_model:
             return False, "Model not found"
 
-        # Check if another model has this preference?
-        # For now, just update it.
         for name, data in self.config.get("models", {}).items():
             if data.get("preference") == int(new_preference):
                 swap_model = name
@@ -69,5 +67,6 @@ class ConfigManager:
         old_preference = self.config["models"][target_model]["preference"]
         self.config["models"][target_model]["preference"] = int(new_preference)
         self.config["models"][swap_model]["preference"] = int(old_preference)
+
         self.save()
         return True, "Preference updated"
