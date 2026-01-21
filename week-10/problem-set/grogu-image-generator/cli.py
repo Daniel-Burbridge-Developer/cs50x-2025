@@ -1,34 +1,20 @@
-import json
-import os
-
-CONFIG_FILE = "config.json"
-
-
-def load_config():
-    if not os.path.exists(CONFIG_FILE):
-        return {}
-    with open(CONFIG_FILE, "r") as f:
-        return json.load(f)
-
-
-def save_config(config):
-    with open(CONFIG_FILE, "w") as f:
-        json.dump(config, f, indent=4)
-    print("Configuration saved!")
+from config_manager import ConfigManager
+from main import run_program
 
 
 def main():
     print("---Image-Generator Management Console---")
-    config = load_config()
+    config = ConfigManager()
 
     while True:
         print("\nOptions:")
         print("  1. Update Models")
-        print("  2. Options")
-        print("  3. Schedule")
-        print("  4. Save & Exit")
+        print("  2. Options (Not Implemented)")
+        print("  3. Schedule (Not Implemented)")
+        print("  4. Exit")
+        print("  5. Start Program")
 
-        choice = input("Select an option (1-4): ")
+        choice = input("Select an option (1-5): ")
 
         if choice == "1":
             update_model(config)
@@ -37,12 +23,23 @@ def main():
         elif choice == "3":
             update_schedule(config)
         elif choice == "4":
-            save_config(config)
-            print("Saving...")
-            print("Complete - Exiting Config")
+            print("Exiting Config")
             break
+        elif choice == "5":
+            start_program_execution()
         else:
             print("Invalid choice.")
+
+
+def start_program_execution():
+    print("\nStarting program... Press Ctrl+C to stop and return to menu.")
+    try:
+        run_program()
+    except KeyboardInterrupt:
+        print("\nStopping program and returning to menu...")
+    except Exception as e:
+        print(f"\nAn error occurred: {e}")
+        input("Press Enter to continue...")
 
 
 def update_model(config):
@@ -58,59 +55,76 @@ def update_model(config):
         elif choice == "2":
             add_new_model(config)
         elif choice == "3":
-            print("Returning to main menu...")
             break
         else:
             print("Invalid choice.")
 
 
 def edit_model_preferences(config):
-    # I should sort this by preference, before printing - but I'll do this for now.
-    for i, model in enumerate(config["models"].values()):
+    models = config.get_models()
+    if not models:
+        print("No models found.")
+        return
+
+    # Create a list for indexed access
+    model_list = list(models.items())
+
+    for i, (name, data) in enumerate(model_list):
         print(
-            f"  {i + 1}. Update {model['alias']} current preference {model['preference']}"
+            f"  {i + 1}. Update {data.get('alias', name)} (Current Preference: {data.get('preference', 'N/A')})"
         )
-    print(f"  {int(len(config['models']) + 1)}. Exit")
+    print(f"  {len(model_list) + 1}. Back")
 
-    while True:
-        choice = input(f"Select an option (1-{int(len(config['models'])) + 1}): ")
+    try:
+        choice = int(input(f"Select an option (1-{len(model_list) + 1}): "))
+        if 1 <= choice <= len(model_list):
+            selected_model_name = model_list[choice - 1][0]
+            selected_model_data = model_list[choice - 1][1]
 
-        if int(choice) < int(len(config["models"]) + 1):
-            # update model
-            print("updating model")
-        elif int(choice) == int(len(config["models"]) + 1):
-            print("exiting update")
-            break
+            new_pref = input(
+                f"Enter new preference for {selected_model_data.get('alias', selected_model_name)}: "
+            )
+            if new_pref.isdigit():
+                success, msg = config.update_preference(
+                    selected_model_data.get("alias"), new_pref
+                )
+                print(msg)
+            else:
+                print("Invalid preference. Must be a number.")
+        elif choice == len(model_list) + 1:
+            return
         else:
-            print("Invalid input")
-
-    return
+            print("Invalid choice.")
+    except ValueError:
+        print("Invalid input.")
 
 
 def add_new_model(config):
-    # I should prevent duplicate Alias's not just keys, but I'm not sure how right now.
-    new_model = input("What is your new model? ")
+    print("\nAdding New Model")
+    name = input("Model unique name (key): ")
+    if not name:
+        return
 
-    if new_model not in config["models"]:
-        alias = input("alias: ")
-        # ensure this swaps preference with a different one, or just make the new model the least preference by default
-        preference = input("preference: ")
-        # this should probably be limited to URL and API
-        call_method = input("call method:")
-        token = input("WARNING - THIS WILL BE STORED IN PLAIN TEXT - \n token:")
-        # save this somehow
-        print("Model added")
-    else:
-        print("Already have model in list")
+    alias = input("Alias: ")
+    preference = input("Preference (number): ")
+    if not preference.isdigit():
+        print("Preference must be a number.")
+        return
 
-    return
+    call_method = input("Call Method (URL/API): ")
+    token = input("Token (stored in plain text, use warning): ")
+
+    success, msg = config.add_model(name, alias, preference, call_method, token)
+    print(msg)
 
 
 def update_options(config):
+    print("Options update not implemented yet.")
     return
 
 
 def update_schedule(config):
+    print("Schedule update not implemented yet.")
     return
 
 

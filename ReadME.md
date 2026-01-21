@@ -49,7 +49,7 @@ This project is being completed, on my dedicated development server via SSH & no
 |  8   | **Trivia (Web)**          | HTML, CSS, JavaScript, DOM Manipulation          |   ✅   |   2026-01-10    |                                                                                                     |
 |  8   | **Homepage (Web)**        | HTML, CSS, JavaScript, DOM Manipulation          |   ✅   |   2026-01-13    | This one was somewhat boring, I can see why frameworks are a thing.                                 |
 |  9   | **Birthdays(Flask)**      | Web Development, MVC Pattern, Backend Logic      |   ✅   |   2026-01-15    |                                                                                                     |
-|  9   | **Finance 9 (Flask)**     | Web Development, MVC Pattern, Backend Logic      |  ⌛️   |                 |                                                                                                     |
-|  10  | **Final Project**         | Capstone: (Specify your own concepts here)       |        |                 |                                                                                                     |
+|  9   | **Finance 9 (Flask)**     | Web Development, MVC Pattern, Backend Logic      |   ✅   |   2026-01-17    |                                                                                                     |
+|  10  | **Final Project**         | Capstone                                         |   ⌛️   |                 | Grogu-Image-Generator (Okay, just image generator in general)                                       |
 
 ---

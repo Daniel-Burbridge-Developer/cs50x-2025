@@ -23,7 +23,7 @@ HF_TOKEN = os.environ.get("HF_TOKEN")
 OUTPUT_DIR = "./output"
 
 
-def main():
+def run_program():
     print("starting up!")
     start_scheduler()
     schedule.every(1).minute.do(report_idle)
@@ -33,6 +33,10 @@ def main():
     while True:
         schedule.run_pending()
         time.sleep(1)
+
+
+def main():
+    run_program()
 
 
 def get_current_time():
