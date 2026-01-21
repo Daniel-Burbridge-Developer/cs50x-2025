@@ -1,4 +1,5 @@
-from google.genai import genai, types
+from google import genai
+from google.genai import types
 
 CREATIVE_CONFIG = types.GenerateContentConfig(temperature=1.5)
 

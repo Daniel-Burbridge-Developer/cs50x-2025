@@ -50,6 +50,7 @@ class ConfigManager:
     def update_preference(self, model_alias, new_preference):
         # Find model by alias
         target_model = None
+        swap_model = None
         for name, data in self.config.get("models", {}).items():
             if data.get("alias") == model_alias:
                 target_model = name
@@ -60,6 +61,13 @@ class ConfigManager:
 
         # Check if another model has this preference?
         # For now, just update it.
+        for name, data in self.config.get("models", {}).items():
+            if data.get("preference") == int(new_preference):
+                swap_model = name
+                break
+
+        old_preference = self.config["models"][target_model]["preference"]
         self.config["models"][target_model]["preference"] = int(new_preference)
+        self.config["models"][swap_model]["preference"] = int(old_preference)
         self.save()
         return True, "Preference updated"

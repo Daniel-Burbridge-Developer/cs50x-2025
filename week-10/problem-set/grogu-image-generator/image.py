@@ -1,7 +1,8 @@
 import os
 from discord import send_to_discord
 from prompts import generate_prompt
-from google.genai import genai, types
+from google import genai
+from google.genai import types
 import random
 import requests
 
