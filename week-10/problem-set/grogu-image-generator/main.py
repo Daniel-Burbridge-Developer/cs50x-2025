@@ -26,8 +26,8 @@ OUTPUT_DIR = "./output"
 def run_program():
     print("starting up!")
     start_scheduler()
-    schedule.every(1).minute.do(report_idle)
-    schedule.every(1).hour.do(report_wake_up)
+    # schedule.every(1).minute.do(report_idle)
+    # schedule.every(1).hour.do(report_wake_up)
     schedule.every().day.at("06:00").do(report_wake_up)
 
     while True:

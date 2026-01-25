@@ -112,7 +112,7 @@ def add_new_model(config):
         return
 
     call_method = input("Call Method (URL/API): ")
-    token = input("Token (stored in plain text, use warning): ")
+    token = input("Token (stored in plain text, use caution): ")
 
     success, msg = config.add_model(name, alias, preference, call_method, token)
     print(msg)

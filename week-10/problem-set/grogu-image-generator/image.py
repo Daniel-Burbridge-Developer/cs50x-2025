@@ -5,6 +5,7 @@ from google import genai
 from google.genai import types
 import random
 import requests
+import time
 
 
 CREATIVE_CONFIG = types.GenerateContentConfig(temperature=1.5)
@@ -27,9 +28,10 @@ def do_the_image_stuff():
 
 def generate_image(
     prompt="Cinematic shot of Baby Yoda (Grogu) wearing a knitted scarf, holding a cup of hot cocoa, autumn forest background, hyper-realistic, 8k, soft lighting, depth of field",
-    file_name="todays_image.png",
+    file_name="todays_image",
 ):
-    output_path = f"{OUTPUT_DIR}/{file_name}"
+    timestamp = int(time.time())
+    output_path = f"{OUTPUT_DIR}/{file_name}_{timestamp}.png"
 
     # Try Pollinations first
     image_data = try_pollinations(prompt)

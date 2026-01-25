@@ -1,1 +1,18 @@
-Mermaid Diagrams were made with the assistance of AI (Gemini), however thoughts & original design "system-architecture" produced by me.
+# AI Assistance Disclosure
+
+## Design & Architecture
+- Mermaid diagrams were created with AI assistance (Gemini), based on my original system design sketches.
+
+## Code Assistance
+- AI (Gemini/Antigravity) helped with:
+  - Improving prompt randomness (moved from finance-themed to random creative themes)
+  - Code review and refactoring suggestions
+  - Discussing scope management and avoiding over-engineering
+  - Tidying up ReadME
+
+## What I Did Myself
+- Original concept and project objective
+- Core implementation of all modules
+- Integration decisions (Discord over WhatsApp, Pollinations as primary provider)
+- CLI configuration tool design
+- All debugging and problem-solving (with AI guidance, not solutions)
